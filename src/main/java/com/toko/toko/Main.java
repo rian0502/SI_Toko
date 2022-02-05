@@ -1,7 +1,5 @@
 package com.toko.toko;
 
-import com.toko.toko.Model.Akun;
-import com.toko.toko.Model.DatabaseModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
