@@ -1,6 +1,7 @@
 module com.toko.toko {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
     opens com.toko.toko to javafx.fxml;

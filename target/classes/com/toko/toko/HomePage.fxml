@@ -3,8 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toko.toko.Controller.ControlHome">
+<AnchorPane prefHeight="486.0" prefWidth="676.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toko.toko.Controller.ControlHome">
    <children>
-      <Button layoutX="521.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleLogoutAction" text="Keluar" />
+      <Button layoutX="596.0" layoutY="432.0" mnemonicParsing="false" onAction="#handleLogoutAction" text="Keluar" />
    </children>
 </AnchorPane>
