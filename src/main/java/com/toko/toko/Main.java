@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LoginPage.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Toko Febrian");
+        stage.setTitle("Toko Rian");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/shop.png"))));
         stage.setScene(scene);
         stage.show();
