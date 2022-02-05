@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da6edf39-f5c3-4420-8ef3-ae1d24640fc9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/images/log-out.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/BarangPenjualan.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/transaksi.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -90,7 +90,8 @@
       <workItem from="1644037547739" duration="1496000" />
       <workItem from="1644039238679" duration="2037000" />
       <workItem from="1644041293123" duration="6224000" />
-      <workItem from="1644047855354" duration="1336000" />
+      <workItem from="1644047855354" duration="1718000" />
+      <workItem from="1644057096315" duration="1174000" />
     </task>
     <servers />
   </component>
