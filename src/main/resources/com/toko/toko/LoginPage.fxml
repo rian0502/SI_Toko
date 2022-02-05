@@ -11,7 +11,15 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity"
+            maxWidth="-Infinity"
+            minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="527.0"
+            prefWidth="726.0"
+            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.toko.toko.Controller.ControlLogin">
+
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#5c527f" height="535.0" layoutX="394.0" layoutY="-7.0" stroke="#5c527f" strokeType="INSIDE" width="332.0" />
    <TextField fx:id="tfUsername" layoutX="452.0" layoutY="274.0" prefHeight="26.0" prefWidth="231.0">
       <opaqueInsets>
