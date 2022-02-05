@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="374.0" prefWidth="612.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="com.toko.toko.Controller.ControlLogin">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-
-    <Label fx:id="welcomeText" prefHeight="18.0" prefWidth="170.0" text="Page 1" />
-    <Button onAction="#onHelloButtonClick" text="Hello!" />
-</VBox>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#5c527f" height="527.0" layoutX="394.0" stroke="#5c527f" strokeType="INSIDE" width="332.0" />
+      <TextField layoutX="452.0" layoutY="274.0" prefHeight="26.0" prefWidth="231.0" />
+      <PasswordField layoutX="452.0" layoutY="332.0" prefHeight="26.0" prefWidth="231.0" />
+      <Button layoutX="415.0" layoutY="421.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="73.0" style="-fx-background-color: #03C4A1;" text="Masuk" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="480.0" layoutY="23.0" prefHeight="38.0" prefWidth="175.0" text="User Log In" textFill="WHITE">
+         <font>
+            <Font name="MT Extra" size="32.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="171.0" fitWidth="208.0" layoutX="482.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/id-card.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

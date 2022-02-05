@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da6edf39-f5c3-4420-8ef3-ae1d24640fc9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/Barang.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toko/toko/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/LoginPage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toko/toko/LoginPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/LoginPage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +41,11 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Java\SI_Toko\src\main\resources\com\toko\toko" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.toko.toko.Main" />
@@ -73,7 +74,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1644037545207</updated>
-      <workItem from="1644037547739" duration="361000" />
+      <workItem from="1644037547739" duration="1496000" />
+      <workItem from="1644039238679" duration="1117000" />
     </task>
     <servers />
   </component>
@@ -90,6 +92,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
