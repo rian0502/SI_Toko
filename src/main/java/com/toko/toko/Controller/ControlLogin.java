@@ -13,15 +13,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ControlLogin implements Initializable {
-    @FXML
-    private ImageView imgview;
-
-    Image image = new Image(String.valueOf(Main.class.getResource("images/id-card.png")));
     @FXML
     protected void onHelloButtonClick(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Main.class.getResource("HomePage.fxml"));
@@ -33,6 +30,6 @@ public class ControlLogin implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        imgview.setImage(image);
+
     }
 }
