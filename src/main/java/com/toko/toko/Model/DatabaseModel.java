@@ -1,10 +1,13 @@
 package com.toko.toko.Model;
 
 import com.toko.toko.Model.KoneksiDatabase.DatabaseConnection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class DatabaseModel {
     private final Connection connection;
@@ -31,5 +34,33 @@ public class DatabaseModel {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+    public void tambahBarang(Barang barang){
+        try {
+            String sql = "INSERT INTO barang VALUES(?,?,?,?,?)";
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(e);
+        }
+    }
+
+    public ObservableList<Barang> getBarang(){
+        ObservableList<Barang> barangs = FXCollections.observableArrayList();
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "SELECT * FROM barang";
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                barangs.add(new Barang(resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getDouble(3),
+                        resultSet.getDouble(4),
+                        resultSet.getInt(5)));
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(e);
+        }
+        return barangs;
     }
 }

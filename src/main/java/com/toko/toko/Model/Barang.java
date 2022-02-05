@@ -1,20 +1,33 @@
 package com.toko.toko.Model;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.StringProperty;
+
+import javafx.beans.property.*;
 
 public class Barang {
-    private StringProperty nama_barang;
-    private DoubleProperty modal_barang;
-    private DoubleProperty harga_jual;
-    private IntegerProperty stock_barang;
+    private IntegerProperty IDbarang = new SimpleIntegerProperty();
+    private StringProperty nama_barang = new SimpleStringProperty();
+    private DoubleProperty modal_barang = new SimpleDoubleProperty();
+    private DoubleProperty harga_jual = new SimpleDoubleProperty();
+    private IntegerProperty stock_barang = new SimpleIntegerProperty();
 
-    public Barang(String nama_barang, double modal_barang, double harga_jual, int stock_barang) {
+    public Barang(int IDbarang, String nama_barang, double modal_barang, double harga_jual, int stock_barang) {
+        setIDbarang(IDbarang);
         setNama_barang(nama_barang);
         setModal_barang(modal_barang);
         setHarga_jual(harga_jual);
         setStock_barang(stock_barang);
+    }
+
+    public int getIDbarang() {
+        return IDbarang.get();
+    }
+
+    public IntegerProperty IDbarangProperty() {
+        return IDbarang;
+    }
+
+    public void setIDbarang(int IDbarang) {
+        this.IDbarang.set(IDbarang);
     }
 
     public String getNama_barang() {

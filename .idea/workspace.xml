@@ -5,9 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da6edf39-f5c3-4420-8ef3-ae1d24640fc9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/transaksi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/transaksi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/Barang.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/Barang.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/DatabaseModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/DatabaseModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlLogin.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlLogin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Model/Barang.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Model/Barang.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +69,8 @@
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="16" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.toko.toko.Main" />
       <module name="Toko" />
       <extension name="coverage">
@@ -89,7 +101,9 @@
       <workItem from="1644039238679" duration="2037000" />
       <workItem from="1644041293123" duration="6224000" />
       <workItem from="1644047855354" duration="1718000" />
-      <workItem from="1644057096315" duration="2184000" />
+      <workItem from="1644057096315" duration="6134000" />
+      <workItem from="1644065992528" duration="1290000" />
+      <workItem from="1644072941016" duration="4622000" />
     </task>
     <servers />
   </component>

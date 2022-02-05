@@ -2,20 +2,23 @@ package com.toko.toko.Controller;
 
 
 import com.toko.toko.Main;
+import com.toko.toko.Model.Barang;
+import com.toko.toko.Model.DatabaseModel;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
+import javafx.scene.control.*;
 
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -24,26 +27,48 @@ import java.util.ResourceBundle;
 public class ControlHome implements Initializable {
 
     @FXML
-    public TextField tfID_barang;
+    private TextField tfID_barang;
     @FXML
-    public TextField tfHargaModal;
+    private TextField tfHargaModal;
     @FXML
-    public TextField tfHargaJual;
+    private TextField tfHargaJual;
     @FXML
-    public TextField tfNamaBarang;
+    private TextField tfNamaBarang;
     @FXML
-    public Spinner SpStockBarang;
+    private Spinner SpStockBarang;
     @FXML
-    public Button btnAddBarang;
+    private Button btnAddBarang;
     @FXML
-    public Button btnUbahBarang;
+    private Button btnUbahBarang;
     @FXML
-    public Button btnHapusBarang;
+    private Button btnHapusBarang;
+    @FXML
+    private TableView <Barang>tableBarang;
+    @FXML
+    private TableColumn<Barang, Integer>rowID;
+    @FXML
+    private TableColumn<Barang, String>rowBarang;
+    @FXML
+    private TableColumn<Barang, Double>rowModal;
+    @FXML
+    private TableColumn<Barang, Double>rowHarga;
+    @FXML
+    private TableColumn<Barang, Integer>rowStock;
+    //FXCollections.observableArrayList(new Barang(1335,"Kopi",13.5,14.0,3));
+    DatabaseModel dbm ;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tfID_barang.setEditable(false);
-
+        dbm = new DatabaseModel();
+        ObservableList<Barang> barangs = dbm.getBarang();
+        rowID.setCellValueFactory(id->id.getValue().IDbarangProperty().asObject());
+        rowBarang.setCellValueFactory(nama->nama.getValue().nama_barangProperty());
+        rowModal.setCellValueFactory(modal->modal.getValue().modal_barangProperty().asObject());
+        rowHarga.setCellValueFactory(harga->harga.getValue().harga_jualProperty().asObject());
+        rowStock.setCellValueFactory(stock->stock.getValue().stock_barangProperty().asObject());
+        tableBarang.setItems(barangs);
     }
 
     public void handleLogoutAction(ActionEvent event) throws IOException {

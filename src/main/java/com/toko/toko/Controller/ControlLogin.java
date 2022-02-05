@@ -47,6 +47,7 @@ public class ControlLogin implements Initializable {
             }
         }catch (Exception e){
             System.out.println("EROR login");
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
 
