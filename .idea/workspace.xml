@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da6edf39-f5c3-4420-8ef3-ae1d24640fc9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/images/key.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/images/user.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toko/toko/LoginPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/LoginPage.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlLogin.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlLogin.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/LoginPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/LoginPage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +44,7 @@
       <recent name="D:\Java\SI_Toko\src\main\resources\com\toko\toko\images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Java\SI_Toko\src\main\resources\com\toko\toko\images" />
       <recent name="D:\Java\SI_Toko\src\main\resources\com\toko\toko" />
     </key>
   </component>
@@ -83,7 +78,7 @@
       <updated>1644037545207</updated>
       <workItem from="1644037547739" duration="1496000" />
       <workItem from="1644039238679" duration="2037000" />
-      <workItem from="1644041293123" duration="308000" />
+      <workItem from="1644041293123" duration="625000" />
     </task>
     <servers />
   </component>

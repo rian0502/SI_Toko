@@ -3,6 +3,7 @@ package com.toko.toko;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -12,6 +13,7 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LoginPage.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Toko Febrian");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("images/shop.png")));
         stage.setScene(scene);
         stage.show();
     }
