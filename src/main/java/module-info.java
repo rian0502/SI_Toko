@@ -5,4 +5,6 @@ module com.toko.toko {
 
     opens com.toko.toko to javafx.fxml;
     exports com.toko.toko;
+    exports com.toko.toko.Controller;
+    opens com.toko.toko.Controller to javafx.fxml;
 }
