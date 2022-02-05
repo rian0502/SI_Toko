@@ -4,18 +4,24 @@ import com.toko.toko.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ControlLogin {
+public class ControlLogin implements Initializable {
     @FXML
-    private Label welcomeText;
+    private ImageView imgview;
 
+    Image image = new Image(String.valueOf(Main.class.getResource("images/id-card.png")));
     @FXML
     protected void onHelloButtonClick(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Main.class.getResource("HomePage.fxml"));
@@ -23,5 +29,10 @@ public class ControlLogin {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        imgview.setImage(image);
     }
 }
