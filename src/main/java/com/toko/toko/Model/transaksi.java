@@ -50,7 +50,7 @@ public class transaksi {
     public void setBarang_penjualan(ArrayList<BarangPenjualan> barang_penjualan) {
         this.barang_penjualan = barang_penjualan;
     }
-    public void tambahData(BarangPenjualan barangPenjualan){
+    public void tambahBarang(BarangPenjualan barangPenjualan){
         this.barang_penjualan.add(barangPenjualan);
     }
 }
