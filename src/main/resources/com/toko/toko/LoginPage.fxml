@@ -39,19 +39,14 @@
          <Font name="MT Extra" size="32.0" />
       </font>
    </Label>
-   <ImageView fitHeight="168.0" fitWidth="192.0" layoutX="476.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@images/id-card.png" />
-      </image>
+   <ImageView fitHeight="168.0" fitWidth="192.0" layoutX="476.0" layoutY="72.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@images/id-card.png"/>
    </ImageView>
    <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="411.0" layoutY="274.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@images/user.png" />
-      </image>
+      <Image url="@images/user.png"/>
    </ImageView>
    <ImageView fitHeight="26.0" fitWidth="33.0" layoutX="411.0" layoutY="332.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@images/key.png" />
-      </image>
+      <Image url="@images/key.png"/>
    </ImageView>
 </AnchorPane>
