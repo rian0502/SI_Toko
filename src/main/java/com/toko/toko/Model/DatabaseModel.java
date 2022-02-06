@@ -38,6 +38,7 @@ public class DatabaseModel {
     public void tambahBarang(Barang barang){
         try {
             String sql = "INSERT INTO barang VALUES(?,?,?,?,?)";
+
         }catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println(e);
