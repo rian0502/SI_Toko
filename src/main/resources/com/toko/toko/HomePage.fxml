@@ -7,9 +7,30 @@
 
 <AnchorPane prefHeight="612.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toko.toko.Controller.ControlHome">
     <TabPane layoutY="43.0" prefHeight="574.0" prefWidth="947.0" tabClosingPolicy="UNAVAILABLE">
-        <Tab text="Kasir">
+        <Tab  text="Kasir">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #FFFDDE;">
-                <TextField layoutX="77.0" layoutY="67.0" />
+                <TextField fx:id="tfIDbarang" layoutX="120.0" layoutY="106.0" />
+            <Label layoutX="22.0" layoutY="110.0" text="ID Barang" />
+            <Spinner fx:id="spJumlahBarang" layoutX="120.0" layoutY="175.0" />
+            <Label layoutX="22.0" layoutY="179.0" text="Jumlah Barang" />
+            <TableView fx:id="tbBelanja" layoutX="506.0" prefHeight="482.0" prefWidth="442.0">
+              <columns>
+                <TableColumn fx:id="colNamaarang" prefWidth="131.20001220703125" text="Nama Barang" />
+                <TableColumn fx:id="colHargaSatuan" prefWidth="110.39996337890625" text="Harga Satuan" />
+                  <TableColumn fx:id="colJumlaharang" prefWidth="90.39996337890625" text="Jumlah Barang" />
+                  <TableColumn fx:id="colTotalHarga" prefWidth="111.2000732421875" text="Total Harga" />
+              </columns>
+            </TableView>
+            <Label layoutX="506.0" layoutY="488.0" text="Total Belanja : ">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbTotalBelanja" layoutX="708.0" layoutY="488.0" prefHeight="43.0" prefWidth="218.0" text="0.0">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Label>
             </AnchorPane>
         </Tab>
         <Tab text="Daftar Barang">
@@ -35,19 +56,28 @@
             <Label layoutX="15.0" layoutY="469.0" text="Stock Barang" />
             <Button layoutX="357.0" layoutY="487.0" mnemonicParsing="false" onAction="#handleSimpanAction" text="Save" />
             <Button layoutX="475.0" layoutY="487.0" mnemonicParsing="false" onAction="#handleCancelAction" text="Cancel" />
-            <Button fx:id="btnAddBarang" layoutX="739.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleAddAction" text="Tambah Barang" />
-            <Button fx:id="btnUbahBarang" layoutX="739.0" layoutY="399.0" mnemonicParsing="false" onAction="#handleUpdateAction" text="Ubah Barang" />
-            <Button fx:id="btnHapusBarang" layoutX="739.0" layoutY="452.0" mnemonicParsing="false" onAction="#handleDeleteAction" text="Hapus Barang" />
+            <Button fx:id="btnAddBarang" layoutX="757.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleAddAction" prefHeight="51.0" prefWidth="132.0" style="-fx-background-color: #270082;" text="Tambah Barang" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></Button>
+            <Button fx:id="btnUbahBarang" layoutX="757.0" layoutY="404.0" mnemonicParsing="false" onAction="#handleUpdateAction" prefHeight="51.0" prefWidth="132.0" style="-fx-background-color: #8B9A46;" text="Ubah Barang" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></Button>
+            <Button fx:id="btnHapusBarang" layoutX="757.0" layoutY="474.0" mnemonicParsing="false" onAction="#handleDeleteAction" prefHeight="51.0" prefWidth="132.0" style="-fx-background-color: #D22779;" text="Hapus Barang" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></Button>
             </AnchorPane>
         </Tab>
         <Tab text="Daftar Hutang">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #E4CDA7;">
-                <TableView prefHeight="350.0" prefWidth="948.0">
+                <TableView fx:id="tableHutang" prefHeight="350.0" prefWidth="948.0">
                     <columns>
-                        <TableColumn prefWidth="261.60001826286316" text="Nama" />
-                        <TableColumn minWidth="0.0" prefWidth="354.4000244140625" text="Alamat" />
-                        <TableColumn prefWidth="148.0" text="Jumlah hutang" />
-                        <TableColumn prefWidth="184.00006103515625" text="Tanggal Hutang" />
+                        <TableColumn fx:id="colNama" prefWidth="261.60001826286316" text="Nama" />
+                        <TableColumn fx:id="colAlamat" minWidth="0.0" prefWidth="354.4000244140625" text="Alamat" />
+                        <TableColumn fx:id="colJumlah" prefWidth="148.0" text="Jumlah hutang" />
+                        <TableColumn fx:id="colTanggal" prefWidth="184.00006103515625" text="Tanggal Hutang" />
                     </columns>
                 </TableView>
             </AnchorPane>

@@ -3,10 +3,9 @@ package com.toko.toko.Controller;
 
 import com.toko.toko.Main;
 import com.toko.toko.Model.Barang;
+import com.toko.toko.Model.BarangPenjualan;
 import com.toko.toko.Model.DatabaseModel;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
+import com.toko.toko.Model.Hutang;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,8 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -27,21 +24,29 @@ import java.util.ResourceBundle;
 public class ControlHome implements Initializable {
 
     @FXML
-    private TextField tfID_barang;
+    private Label lbTotalBelanja;
     @FXML
-    private TextField tfHargaModal;
+    private TextField tfIDbarang;
     @FXML
-    private TextField tfHargaJual;
+    private TableView<BarangPenjualan> tbBelanja;
     @FXML
-    private TextField tfNamaBarang;
+    private TableColumn<BarangPenjualan, Double> colHargaSatuan;
     @FXML
-    private Spinner SpStockBarang;
+    private TableColumn<BarangPenjualan, String> colNamaarang;
     @FXML
-    private Button btnAddBarang;
+    private TableColumn<BarangPenjualan, Integer> colJumlaharang;
     @FXML
-    private Button btnUbahBarang;
+    private TableColumn<BarangPenjualan, Double> colTotalHarga;
     @FXML
-    private Button btnHapusBarang;
+    private TableView<Hutang> tableHutang;
+    @FXML
+    private TableColumn<Hutang, String> colNama;
+    @FXML
+    private TableColumn<Hutang, String> colAlamat;
+    @FXML
+    private TableColumn<Hutang, Double> colJumlah;
+    @FXML
+    private TableColumn<Hutang, String> colTanggal;
     @FXML
     private TableView <Barang>tableBarang;
     @FXML
@@ -54,13 +59,32 @@ public class ControlHome implements Initializable {
     private TableColumn<Barang, Double>rowHarga;
     @FXML
     private TableColumn<Barang, Integer>rowStock;
-    //FXCollections.observableArrayList(new Barang(1335,"Kopi",13.5,14.0,3));
+    @FXML
+    private TextField tfID_barang;
+    @FXML
+    private TextField tfHargaModal;
+    @FXML
+    private TextField tfHargaJual;
+    @FXML
+    private TextField tfNamaBarang;
+    @FXML
+    private Spinner<Integer> SpStockBarang;
+    @FXML
+    private Spinner<Integer> spJumlahBarang;
+    @FXML
+    private Button btnAddBarang;
+    @FXML
+    private Button btnUbahBarang;
+    @FXML
+    private Button btnHapusBarang;
+
     DatabaseModel dbm ;
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tfID_barang.setEditable(false);
+        SpinnerValueFactory<Integer>valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
+        SpStockBarang.setValueFactory(valueFactory);
         dbm = new DatabaseModel();
         ObservableList<Barang> barangs = dbm.getBarang();
         rowID.setCellValueFactory(id->id.getValue().IDbarangProperty().asObject());
@@ -69,6 +93,13 @@ public class ControlHome implements Initializable {
         rowHarga.setCellValueFactory(harga->harga.getValue().harga_jualProperty().asObject());
         rowStock.setCellValueFactory(stock->stock.getValue().stock_barangProperty().asObject());
         tableBarang.setItems(barangs);
+        tableBarang.setOnMousePressed(mouseEvent -> {
+            tfID_barang.setText(String.valueOf(tableBarang.getSelectionModel().getSelectedItems().get(0).getIDbarang()));
+            tfNamaBarang.setText(tableBarang.getSelectionModel().getSelectedItems().get(0).getNama_barang());
+            tfHargaModal.setText(String.valueOf(tableBarang.getSelectionModel().getSelectedItems().get(0).getModal_barang()));
+            tfHargaJual.setText(String.valueOf(tableBarang.getSelectionModel().getSelectedItems().get(0).getHarga_jual()));
+            SpStockBarang.getValueFactory().setValue(tableBarang.getSelectionModel().getSelectedItems().get(0).getStock_barang());
+        });
     }
 
     public void handleLogoutAction(ActionEvent event) throws IOException {
@@ -86,6 +117,7 @@ public class ControlHome implements Initializable {
         btnUbahBarang.setDisable(false);
         btnHapusBarang.setDisable(false);
         btnAddBarang.setDisable(false);
+        SpStockBarang.getValueFactory().setValue(1);
         tfID_barang.clear();
         tfHargaJual.clear();
         tfNamaBarang.clear();
