@@ -15,14 +15,23 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ControlHome implements Initializable {
-
+    @FXML
+    public Button btnCancel;
+    @FXML
+    public Button btnADD;
+    @FXML
+    public Button btnClearCount;
     @FXML
     private Label lbTotalBelanja;
     @FXML
@@ -80,12 +89,7 @@ public class ControlHome implements Initializable {
 
     DatabaseModel dbm ;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        tfID_barang.setEditable(false);
-        SpinnerValueFactory<Integer>valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
-        SpStockBarang.setValueFactory(valueFactory);
-        dbm = new DatabaseModel();
+    public void refreshTableBarang(){
         ObservableList<Barang> barangs = dbm.getBarang();
         rowID.setCellValueFactory(id->id.getValue().IDbarangProperty().asObject());
         rowBarang.setCellValueFactory(nama->nama.getValue().nama_barangProperty());
@@ -93,6 +97,28 @@ public class ControlHome implements Initializable {
         rowHarga.setCellValueFactory(harga->harga.getValue().harga_jualProperty().asObject());
         rowStock.setCellValueFactory(stock->stock.getValue().stock_barangProperty().asObject());
         tableBarang.setItems(barangs);
+    }
+    private void setRoundedbutton(){
+        double size = 30;
+        btnADD.setShape(new Circle(size));
+        btnADD.setMinSize(2*size, 2*size);
+        btnADD.setMaxSize(2*size, 2*size);
+        btnClearCount.setShape(new Circle(size));
+        btnClearCount.setMinSize(2*size, 2*size);
+        btnClearCount.setMaxSize(2*size, 2*size);
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setRoundedbutton();
+        tfID_barang.setEditable(false);
+        tfNamaBarang.setEditable(false);
+        tfHargaJual.setEditable(false);
+        tfHargaModal.setEditable(false);
+        SpStockBarang.setEditable(false);
+        SpinnerValueFactory<Integer>valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
+        SpStockBarang.setValueFactory(valueFactory);
+        dbm = new DatabaseModel();
+        refreshTableBarang();
         tableBarang.setOnMousePressed(mouseEvent -> {
             tfID_barang.setText(String.valueOf(tableBarang.getSelectionModel().getSelectedItems().get(0).getIDbarang()));
             tfNamaBarang.setText(tableBarang.getSelectionModel().getSelectedItems().get(0).getNama_barang());
@@ -111,6 +137,34 @@ public class ControlHome implements Initializable {
     }
 
     public void handleSimpanAction(ActionEvent event) {
+        if (!btnAddBarang.isDisable()){
+            if(tfNamaBarang.getText().trim().equals("") && tfHargaJual.getText().trim().equals("") && tfHargaModal.getText().trim().equals("")){
+                JOptionPane.showMessageDialog(null, "Harap Isi Data Barang dengan lengkap","Warning",JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                dbm.tambahBarang(new Barang(Integer.parseInt(tfID_barang.getText().trim()),
+                        tfNamaBarang.getText().trim(),
+                        Double.parseDouble(tfHargaModal.getText().trim()),Double.parseDouble(tfHargaJual.getText().trim()),SpStockBarang.getValue()));
+                refreshTableBarang();
+                btnCancel.fire();
+            }
+        }else if(!btnUbahBarang.isDisable()){
+            if(tfNamaBarang.getText().trim().equals("") && tfHargaJual.getText().trim().equals("") && tfHargaModal.getText().trim().equals("")){
+                JOptionPane.showMessageDialog(null, "Harap Isi Data Barang dengan lengkap","Warning",JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                dbm.updateBarang(new Barang(
+                        Integer.parseInt(tfID_barang.getText().trim()),
+                        tfNamaBarang.getText().trim(),
+                        Double.parseDouble(tfHargaModal.getText().trim()),
+                        Double.parseDouble(tfHargaJual.getText().trim()),
+                        SpStockBarang.getValue()));
+                refreshTableBarang();
+                btnCancel.fire();
+            }
+        }else{
+            dbm.deleteBarang(Integer.parseInt(tfID_barang.getText().trim()));
+            refreshTableBarang();
+            btnCancel.fire();
+        }
     }
 
     public void handleCancelAction(ActionEvent event) {
@@ -121,19 +175,34 @@ public class ControlHome implements Initializable {
         tfID_barang.clear();
         tfHargaJual.clear();
         tfNamaBarang.clear();
+        tfHargaModal.clear();
+        SpStockBarang.getValueFactory().setValue(1);
     }
 
     public void handleAddAction(ActionEvent event) {
+        tfNamaBarang.setEditable(true);
+        tfHargaJual.setEditable(true);
+        tfHargaModal.setEditable(true);
+        SpStockBarang.setEditable(true);
+        tfID_barang.setText(String.valueOf(dbm.getIdBarang()));
         btnUbahBarang.setDisable(true);
         btnHapusBarang.setDisable(true);
     }
 
     public void handleUpdateAction(ActionEvent event) {
+        tfNamaBarang.setEditable(true);
+        tfHargaJual.setEditable(true);
+        tfHargaModal.setEditable(true);
+        SpStockBarang.setEditable(true);
         btnAddBarang.setDisable(true);
         btnHapusBarang.setDisable(true);
     }
 
     public void handleDeleteAction(ActionEvent event) {
+        tfNamaBarang.setEditable(false);
+        tfHargaJual.setEditable(false);
+        tfHargaModal.setEditable(false);
+        SpStockBarang.setEditable(false);
         btnUbahBarang.setDisable(true);
         btnAddBarang.setDisable(true);
     }
