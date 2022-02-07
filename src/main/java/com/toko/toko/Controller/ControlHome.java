@@ -118,6 +118,9 @@ public class ControlHome implements Initializable {
         tfHargaJual.setEditable(false);
         tfHargaModal.setEditable(false);
         SpStockBarang.setEditable(false);
+        tfIDbarangKasir.setEditable(false);
+        spJumlahBarang.setEditable(false);
+        btnADD.setDisable(true);
         setValueSP();
         dbm = new DatabaseModel();
         refreshTableBarang();
@@ -219,7 +222,7 @@ public class ControlHome implements Initializable {
     @FXML
     public void handleAddBelanja() {
         try {
-            dbm.selectBelanja(Integer.parseInt(tfIDbarangKasir.getText().trim()), spJumlahBarang.getValue());
+            dbm.selectBelanja(Integer.parseInt(tfIDbarangKasir.getText().trim()), spJumlahBarang.getValue(), idTrx);
             refreshTableKasir();
             refreshTableBarang();
         }catch (Exception e){
@@ -235,13 +238,19 @@ public class ControlHome implements Initializable {
     }
     @FXML
     public void handleCetakStruk() {
+        tfIDbarangKasir.setEditable(false);
+        spJumlahBarang.setEditable(false);
         btnNewTransaksi.setDisable(false);
+        btnADD.setDisable(true);
         dbm.resetPenjualan();
     }
     @FXML
     public void handleMakeTs() {
         btnNewTransaksi.setDisable(true);
+        tfIDbarangKasir.setEditable(true);
+        spJumlahBarang.setEditable(true);
         LocalDate date = LocalDate.now();
+        btnADD.setDisable(false);
         try {
             idTrx = dbm.getIdTransaksi();
             dbm.tambahTransaksi(new Transaksi(idTrx,date.toString()));

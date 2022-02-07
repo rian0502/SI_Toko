@@ -156,9 +156,26 @@ public class DatabaseModel {
             preparedStatement.close();
         }catch (Exception e){
             System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
-    public void selectBelanja(int id, int jumlah){
+    public void tambahPenjualan(String nama, int jumlah, double harga, double total, int idTrx){
+        try {
+            String sql = "INSERT INTO penjuala_barang(`nama_barang`, `jumlah_barang`, `harga_barang`, `total_harga`, `id_transaksi`) VALUES (?,?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, nama);
+            preparedStatement.setInt(2,jumlah);
+            preparedStatement.setDouble(3, harga);
+            preparedStatement.setDouble(4, total);
+            preparedStatement.setInt(5, idTrx);
+            preparedStatement.execute();
+            preparedStatement.close();
+        }catch (Exception e){
+            System.out.println(e);
+            System.out.println(e.getMessage());
+        }
+    }
+    public void selectBelanja(int id, int jumlah, int idTrx){
         try {
             String sql = "CALL selectBarang(?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -170,6 +187,7 @@ public class DatabaseModel {
                         resultSet.getDouble(2),
                         jumlah,
                         jumlah*resultSet.getDouble(2)));
+                tambahPenjualan(resultSet.getString(1),jumlah,resultSet.getDouble(2),jumlah*resultSet.getDouble(2),idTrx);
             }
             kurangBarang(id, jumlah);
         }catch (Exception e){
