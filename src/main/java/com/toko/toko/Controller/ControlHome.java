@@ -212,12 +212,17 @@ public class ControlHome implements Initializable {
         btnAddBarang.setDisable(true);
     }
     public void refreshTableKasir(){
+        double totalharga = 0;
         ObservableList<BarangPenjualan> belanjas = dbm.getTransaksis();
         colNamaarang.setCellValueFactory(nama->nama.getValue().nama_barangProperty());
         colHargaSatuan.setCellValueFactory(harga->harga.getValue().harga_barangProperty().asObject());
         colJumlaharang.setCellValueFactory(jumlah->jumlah.getValue().jumlahBarangProperty().asObject());
         colTotalHarga.setCellValueFactory(total->total.getValue().total_hargaProperty().asObject());
         tbBelanja.setItems(belanjas);
+        for (BarangPenjualan barangPenjualan : belanjas){
+            totalharga += barangPenjualan.getTotal_harga();
+            lbTotalBelanja.setText(String.valueOf(totalharga));
+        }
     }
     @FXML
     public void handleAddBelanja() {
