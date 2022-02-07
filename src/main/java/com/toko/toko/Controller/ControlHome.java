@@ -222,9 +222,17 @@ public class ControlHome implements Initializable {
     @FXML
     public void handleAddBelanja() {
         try {
-            dbm.selectBelanja(Integer.parseInt(tfIDbarangKasir.getText().trim()), spJumlahBarang.getValue(), idTrx);
-            refreshTableKasir();
-            refreshTableBarang();
+           if (dbm.searchBarang(tfIDbarangKasir.getText().trim()) == 0){
+               JOptionPane.showMessageDialog(null,"Barang tidak Ada","Pembelian",JOptionPane.WARNING_MESSAGE);
+           }else {
+              if(dbm.isEmptyBarang(tfIDbarangKasir.getText().trim(),spJumlahBarang.getValue())){
+                  dbm.selectBelanja(Integer.parseInt(tfIDbarangKasir.getText().trim()), spJumlahBarang.getValue(), idTrx);
+                  refreshTableKasir();
+                  refreshTableBarang();
+              }else {
+                  JOptionPane.showMessageDialog(null,"Barang tidak Cukup","Pembelian",JOptionPane.WARNING_MESSAGE);
+              }
+           }
         }catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println(e);

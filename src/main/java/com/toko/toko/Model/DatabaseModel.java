@@ -196,6 +196,38 @@ public class DatabaseModel {
             System.out.println(e.getMessage());
         }
     }
+    public int searchBarang(String id){
+        try{
+            String sql = "SELECT barang.id_barang FROM barang WHERE barang.id_barang = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        }catch (Exception e){
+            System.out.println(e);
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+    public boolean isEmptyBarang(String id, int jumlah){
+        try{
+            String sql = "SELECT barang.stock_barang FROM barang WHERE barang.id_barang = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                if (jumlah < resultSet.getInt(1)){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e);
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
     public ObservableList<BarangPenjualan> getTransaksis() {
         return penjualans;
     }
