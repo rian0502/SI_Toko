@@ -1,14 +1,12 @@
 package com.toko.toko.Model;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 public class BarangPenjualan {
-    private StringProperty nama_barang;
-    private DoubleProperty harga_barang;
-    private IntegerProperty jumlahBarang;
-    private DoubleProperty total_harga;
+    private StringProperty nama_barang= new SimpleStringProperty();
+    private DoubleProperty harga_barang = new SimpleDoubleProperty();
+    private IntegerProperty jumlahBarang = new SimpleIntegerProperty();
+    private DoubleProperty total_harga = new SimpleDoubleProperty();
 
     public BarangPenjualan(String nama_barang, double harga_barang, int jumlahBarang, double total_harga) {
        setNama_barang(nama_barang);

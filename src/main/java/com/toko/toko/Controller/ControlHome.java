@@ -2,10 +2,7 @@ package com.toko.toko.Controller;
 
 
 import com.toko.toko.Main;
-import com.toko.toko.Model.Barang;
-import com.toko.toko.Model.BarangPenjualan;
-import com.toko.toko.Model.DatabaseModel;
-import com.toko.toko.Model.Hutang;
+import com.toko.toko.Model.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,13 +12,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -33,9 +29,9 @@ public class ControlHome implements Initializable {
     @FXML
     public Button btnClearCount;
     @FXML
-    private Label lbTotalBelanja;
+    public TextField tfIDbarangKasir;
     @FXML
-    private TextField tfIDbarang;
+    private Label lbTotalBelanja;
     @FXML
     private TableView<BarangPenjualan> tbBelanja;
     @FXML
@@ -86,7 +82,8 @@ public class ControlHome implements Initializable {
     private Button btnUbahBarang;
     @FXML
     private Button btnHapusBarang;
-
+    @FXML
+    private Button btnNewTransaksi;
     DatabaseModel dbm ;
 
     public void refreshTableBarang(){
@@ -107,6 +104,12 @@ public class ControlHome implements Initializable {
         btnClearCount.setMinSize(2*size, 2*size);
         btnClearCount.setMaxSize(2*size, 2*size);
     }
+    private void setValueSP(){
+        SpinnerValueFactory<Integer>valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
+        SpStockBarang.setValueFactory(valueFactory);
+        SpinnerValueFactory<Integer>valueFactoryKasir = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
+        spJumlahBarang.setValueFactory(valueFactoryKasir);
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setRoundedbutton();
@@ -115,8 +118,7 @@ public class ControlHome implements Initializable {
         tfHargaJual.setEditable(false);
         tfHargaModal.setEditable(false);
         SpStockBarang.setEditable(false);
-        SpinnerValueFactory<Integer>valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
-        SpStockBarang.setValueFactory(valueFactory);
+        setValueSP();
         dbm = new DatabaseModel();
         refreshTableBarang();
         tableBarang.setOnMousePressed(mouseEvent -> {
@@ -127,7 +129,7 @@ public class ControlHome implements Initializable {
             SpStockBarang.getValueFactory().setValue(tableBarang.getSelectionModel().getSelectedItems().get(0).getStock_barang());
         });
     }
-
+    @FXML
     public void handleLogoutAction(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("LoginPage.fxml")));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -135,8 +137,8 @@ public class ControlHome implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
-    public void handleSimpanAction(ActionEvent event) {
+    @FXML
+    public void handleSimpanAction() {
         if (!btnAddBarang.isDisable()){
             if(tfNamaBarang.getText().trim().equals("") && tfHargaJual.getText().trim().equals("") && tfHargaModal.getText().trim().equals("")){
                 JOptionPane.showMessageDialog(null, "Harap Isi Data Barang dengan lengkap","Warning",JOptionPane.INFORMATION_MESSAGE);
@@ -166,8 +168,8 @@ public class ControlHome implements Initializable {
             btnCancel.fire();
         }
     }
-
-    public void handleCancelAction(ActionEvent event) {
+    @FXML
+    public void handleCancelAction() {
         btnUbahBarang.setDisable(false);
         btnHapusBarang.setDisable(false);
         btnAddBarang.setDisable(false);
@@ -178,8 +180,8 @@ public class ControlHome implements Initializable {
         tfHargaModal.clear();
         SpStockBarang.getValueFactory().setValue(1);
     }
-
-    public void handleAddAction(ActionEvent event) {
+    @FXML
+    public void handleAddAction() {
         tfNamaBarang.setEditable(true);
         tfHargaJual.setEditable(true);
         tfHargaModal.setEditable(true);
@@ -188,8 +190,8 @@ public class ControlHome implements Initializable {
         btnUbahBarang.setDisable(true);
         btnHapusBarang.setDisable(true);
     }
-
-    public void handleUpdateAction(ActionEvent event) {
+    @FXML
+    public void handleUpdateAction() {
         tfNamaBarang.setEditable(true);
         tfHargaJual.setEditable(true);
         tfHargaModal.setEditable(true);
@@ -197,13 +199,54 @@ public class ControlHome implements Initializable {
         btnAddBarang.setDisable(true);
         btnHapusBarang.setDisable(true);
     }
-
-    public void handleDeleteAction(ActionEvent event) {
+    @FXML
+    public void handleDeleteAction() {
         tfNamaBarang.setEditable(false);
         tfHargaJual.setEditable(false);
         tfHargaModal.setEditable(false);
         SpStockBarang.setEditable(false);
         btnUbahBarang.setDisable(true);
         btnAddBarang.setDisable(true);
+    }
+    public void refreshTableKasir(){
+        ObservableList<BarangPenjualan> belanjas = dbm.getTransaksis();
+        colNamaarang.setCellValueFactory(nama->nama.getValue().nama_barangProperty());
+        colHargaSatuan.setCellValueFactory(harga->harga.getValue().harga_barangProperty().asObject());
+        colJumlaharang.setCellValueFactory(jumlah->jumlah.getValue().jumlahBarangProperty().asObject());
+        colTotalHarga.setCellValueFactory(total->total.getValue().total_hargaProperty().asObject());
+        tbBelanja.setItems(belanjas);
+    }
+    @FXML
+    public void handleAddBelanja() {
+        try {
+            dbm.selectBelanja(Integer.parseInt(tfIDbarangKasir.getText().trim()), spJumlahBarang.getValue());
+            refreshTableKasir();
+            refreshTableBarang();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(e);
+        }
+    }
+    private int idTrx = 0;
+    @FXML
+    public void handleClearKasirAction() {
+        tfIDbarangKasir.clear();
+        spJumlahBarang.getValueFactory().setValue(1);
+    }
+    @FXML
+    public void handleCetakStruk() {
+        btnNewTransaksi.setDisable(false);
+        dbm.resetPenjualan();
+    }
+    @FXML
+    public void handleMakeTs() {
+        btnNewTransaksi.setDisable(true);
+        LocalDate date = LocalDate.now();
+        try {
+            idTrx = dbm.getIdTransaksi();
+            dbm.tambahTransaksi(new Transaksi(idTrx,date.toString()));
+        }catch (Exception e){
+
+        }
     }
 }

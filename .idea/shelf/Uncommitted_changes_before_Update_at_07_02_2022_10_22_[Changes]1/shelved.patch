@@ -1,0 +1,746 @@
+Index: src/main/java/com/toko/toko/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.toko.toko;\r\nimport javafx.application.Application;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Scene;\r\nimport javafx.scene.image.Image;\r\nimport javafx.stage.Stage;\r\nimport java.io.IOException;\r\nimport java.util.Objects;\r\n\r\npublic class Main extends Application {\r\n    @Override\r\n    public void start(Stage stage) throws IOException {\r\n        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(\"LoginPage.fxml\"));\r\n        Scene scene = new Scene(fxmlLoader.load());\r\n        stage.setResizable(false);\r\n        stage.setTitle(\"Toko Rian\");\r\n        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(\"images/shop.png\"))));\r\n        stage.setScene(scene);\r\n        stage.show();\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        launch();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/toko/toko/Main.java b/src/main/java/com/toko/toko/Main.java
+--- a/src/main/java/com/toko/toko/Main.java	
++++ b/src/main/java/com/toko/toko/Main.java	
+@@ -1,4 +1,5 @@
+ package com.toko.toko;
++
+ import javafx.application.Application;
+ import javafx.fxml.FXMLLoader;
+ import javafx.scene.Scene;
+Index: src/main/java/com/toko/toko/Model/DatabaseModel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.toko.toko.Model;\r\n\r\nimport com.toko.toko.Model.KoneksiDatabase.DatabaseConnection;\r\nimport javafx.collections.FXCollections;\r\nimport javafx.collections.ObservableList;\r\n\r\nimport javax.swing.*;\r\nimport java.sql.Connection;\r\nimport java.sql.PreparedStatement;\r\nimport java.sql.ResultSet;\r\nimport java.sql.Statement;\r\n\r\npublic class DatabaseModel {\r\n    private final Connection connection;\r\n\r\n    public DatabaseModel(){\r\n        this.connection = DatabaseConnection.getKoneksi();\r\n    }\r\n\r\n    public boolean loginAkun(Akun akun){\r\n        try {\r\n            String sql = \"SELECT akun.username, akun.password FROM akun WHERE username = ? AND password = ?\";\r\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\r\n            preparedStatement.setString(1,akun.getUsername());\r\n            preparedStatement.setString(2,akun.getPassword());\r\n            ResultSet resultSet = preparedStatement.executeQuery();\r\n            while (resultSet.next()){\r\n                if (resultSet.getString(1).trim().equals(akun.getUsername()) && resultSet.getString(2).trim().equals(akun.getPassword())){\r\n                    return true;\r\n                }\r\n                break;\r\n            }\r\n        }catch (Exception e){\r\n            System.out.println(\"EROR CLASS DBM\");\r\n            System.out.println(e.getMessage());\r\n        }\r\n        return false;\r\n    }\r\n    public void tambahBarang(Barang barang){\r\n        try {\r\n            String sql = \"INSERT INTO barang VALUES(?,?,?,?,?)\";\r\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\r\n            preparedStatement.setInt(1, barang.getIDbarang());\r\n            preparedStatement.setString(2,barang.getNama_barang());\r\n            preparedStatement.setDouble(3, barang.getModal_barang());\r\n            preparedStatement.setDouble(4, barang.getHarga_jual());\r\n            preparedStatement.setInt(5, barang.getStock_barang());\r\n            preparedStatement.execute();\r\n            preparedStatement.close();\r\n            JOptionPane.showMessageDialog(null, \"Barang Berhasil di Tambah\",\"Barang\",JOptionPane.INFORMATION_MESSAGE);\r\n        }catch (Exception e){\r\n            System.out.println(\"EROR TAMBAH BARANG\");\r\n            System.out.println(e.getMessage());\r\n            System.out.println(e);\r\n        }\r\n    }\r\n    public void updateBarang(Barang barang){\r\n        try {\r\n            String sql = \"UPDATE barang SET nama_barang = ?, modal_barang = ?, harga_jual=?,stock_barang=? WHERE id_barang=?\";\r\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\r\n            preparedStatement.setString(1, barang.getNama_barang());\r\n            preparedStatement.setDouble(2,barang.getModal_barang());\r\n            preparedStatement.setDouble(3, barang.getHarga_jual());\r\n            preparedStatement.setInt(4,barang.getStock_barang());\r\n            preparedStatement.setInt(5, barang.getIDbarang());\r\n            preparedStatement.execute();\r\n            preparedStatement.close();\r\n        }catch (Exception e){\r\n            System.out.println(\"EROR UPDATE BARANG\");\r\n            System.out.println(e);\r\n            System.out.println(e.getMessage());\r\n        }\r\n    }\r\n    public void deleteBarang(int idBarang){\r\n        try {\r\n            String sql = \"DELETE FROM barang WHERE id_barang = ?\";\r\n            PreparedStatement statement = connection.prepareStatement(sql);\r\n            statement.setInt(1,idBarang);\r\n            statement.execute();\r\n            statement.close();\r\n        }catch (Exception e){\r\n            System.out.println(\"EROR DELETE BARANG\");\r\n            System.out.println(e);\r\n            System.out.println(e.getMessage());\r\n        }\r\n    }\r\n    public ObservableList<Barang> getBarang(){\r\n        ObservableList<Barang> barangs = FXCollections.observableArrayList();\r\n        try {\r\n            Statement statement = connection.createStatement();\r\n            String sql = \"SELECT * FROM barang\";\r\n            ResultSet resultSet = statement.executeQuery(sql);\r\n            while (resultSet.next()){\r\n                barangs.add(new Barang(resultSet.getInt(1),\r\n                        resultSet.getString(2),\r\n                        resultSet.getDouble(3),\r\n                        resultSet.getDouble(4),\r\n                        resultSet.getInt(5)));\r\n            }\r\n        }catch (Exception e){\r\n            System.out.println(e.getMessage());\r\n            System.out.println(e);\r\n        }\r\n        return barangs;\r\n    }\r\n    public int getIdBarang(){\r\n        try{\r\n            String sql = \"SELECT MAX(id_barang) FROM barang\";\r\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\r\n            ResultSet resultSet = preparedStatement.executeQuery();\r\n            while (resultSet.next()){\r\n                return (resultSet.getInt(1))+1;\r\n            }\r\n        }catch (Exception e){\r\n            System.out.println(e);\r\n            System.out.println(e.getMessage());\r\n        }\r\n        return 0;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/toko/toko/Model/DatabaseModel.java b/src/main/java/com/toko/toko/Model/DatabaseModel.java
+--- a/src/main/java/com/toko/toko/Model/DatabaseModel.java	
++++ b/src/main/java/com/toko/toko/Model/DatabaseModel.java	
+@@ -3,7 +3,6 @@
+ import com.toko.toko.Model.KoneksiDatabase.DatabaseConnection;
+ import javafx.collections.FXCollections;
+ import javafx.collections.ObservableList;
+-
+ import javax.swing.*;
+ import java.sql.Connection;
+ import java.sql.PreparedStatement;
+@@ -12,11 +11,11 @@
+ 
+ public class DatabaseModel {
+     private final Connection connection;
++    private ObservableList<BarangPenjualan> penjualans = FXCollections.observableArrayList();
+ 
+     public DatabaseModel(){
+         this.connection = DatabaseConnection.getKoneksi();
+     }
+-
+     public boolean loginAkun(Akun akun){
+         try {
+             String sql = "SELECT akun.username, akun.password FROM akun WHERE username = ? AND password = ?";
+@@ -103,6 +102,7 @@
+         }
+         return barangs;
+     }
++
+     public int getIdBarang(){
+         try{
+             String sql = "SELECT MAX(id_barang) FROM barang";
+@@ -117,4 +117,71 @@
+         }
+         return 0;
+     }
++    public int getIdTransaksi(){
++        int id = 0;
++        try {
++            String sql = "SELECT MAX(id_transaksi) FROM transaksi";
++            PreparedStatement preparedStatement = connection.prepareStatement(sql);
++            ResultSet resultSet = preparedStatement.executeQuery();
++            while (resultSet.next()){
++                return (resultSet.getInt(1)) != 0 ? resultSet.getInt(1)+1 : 12123;
++            }
++        }catch (Exception e){
++            System.out.println(e);
++            System.out.println(e.getMessage());
++        }
++        return id;
++    }
++    public void tambahTransaksi(Transaksi transaksi){
++        try{
++            String sql = "INSERT INTO transaksi(id_transaksi, tanggal_transaksi) VALUES(?,?)";
++            PreparedStatement preparedStatement = connection.prepareStatement(sql);
++            preparedStatement.setInt(1, transaksi.getId_transaksi());
++            preparedStatement.setString(2,transaksi.getTanggal_transaksi());
++            preparedStatement.execute();
++            preparedStatement.close();
++        }catch (Exception e){
++            System.out.println("EROR TRANSAKSI");
++            System.out.println(e);
++            System.out.println(e.getMessage());
++        }
++    }
++    public void kurangBarang(int id, int jumlah){
++        try {
++            String sql = "CALL kurangBarang(?,?)";
++            PreparedStatement preparedStatement = connection.prepareStatement(sql);
++            preparedStatement.setInt(1,id);
++            preparedStatement.setInt(2,jumlah);
++            preparedStatement.execute();
++            preparedStatement.close();
++        }catch (Exception e){
++            System.out.println(e);
++        }
++    }
++    public void selectBelanja(int id, int jumlah){
++        try {
++            String sql = "CALL selectBarang(?)";
++            PreparedStatement preparedStatement = connection.prepareStatement(sql);
++            preparedStatement.setInt(1,id);
++            ResultSet resultSet = preparedStatement.executeQuery();
++            while (resultSet.next()){
++                penjualans.add(new BarangPenjualan(
++                        resultSet.getString(1),
++                        resultSet.getDouble(2),
++                        jumlah,
++                        jumlah*resultSet.getDouble(2)));
++            }
++            kurangBarang(id, jumlah);
++        }catch (Exception e){
++            System.out.println("EROR SELECT BARANG");
++            System.out.println(e);
++            System.out.println(e.getMessage());
++        }
++    }
++    public ObservableList<BarangPenjualan> getTransaksis() {
++        return penjualans;
++    }
++    public void resetPenjualan(){
++        penjualans.clear();
++    }
+ }
+Index: src/main/java/com/toko/toko/Controller/ControlHome.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.toko.toko.Controller;\r\n\r\n\r\nimport com.toko.toko.Main;\r\nimport com.toko.toko.Model.Barang;\r\nimport com.toko.toko.Model.BarangPenjualan;\r\nimport com.toko.toko.Model.DatabaseModel;\r\nimport com.toko.toko.Model.Hutang;\r\nimport javafx.collections.ObservableList;\r\nimport javafx.event.ActionEvent;\r\nimport javafx.fxml.FXML;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.fxml.Initializable;\r\nimport javafx.scene.Node;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.Scene;\r\nimport javafx.scene.control.*;\r\nimport javafx.scene.layout.AnchorPane;\r\nimport javafx.scene.shape.Circle;\r\nimport javafx.stage.Stage;\r\n\r\nimport javax.swing.*;\r\nimport java.io.IOException;\r\nimport java.net.URL;\r\nimport java.util.Objects;\r\nimport java.util.ResourceBundle;\r\n\r\npublic class ControlHome implements Initializable {\r\n    @FXML\r\n    public Button btnCancel;\r\n    @FXML\r\n    public Button btnADD;\r\n    @FXML\r\n    public Button btnClearCount;\r\n    @FXML\r\n    private Label lbTotalBelanja;\r\n    @FXML\r\n    private TextField tfIDbarang;\r\n    @FXML\r\n    private TableView<BarangPenjualan> tbBelanja;\r\n    @FXML\r\n    private TableColumn<BarangPenjualan, Double> colHargaSatuan;\r\n    @FXML\r\n    private TableColumn<BarangPenjualan, String> colNamaarang;\r\n    @FXML\r\n    private TableColumn<BarangPenjualan, Integer> colJumlaharang;\r\n    @FXML\r\n    private TableColumn<BarangPenjualan, Double> colTotalHarga;\r\n    @FXML\r\n    private TableView<Hutang> tableHutang;\r\n    @FXML\r\n    private TableColumn<Hutang, String> colNama;\r\n    @FXML\r\n    private TableColumn<Hutang, String> colAlamat;\r\n    @FXML\r\n    private TableColumn<Hutang, Double> colJumlah;\r\n    @FXML\r\n    private TableColumn<Hutang, String> colTanggal;\r\n    @FXML\r\n    private TableView <Barang>tableBarang;\r\n    @FXML\r\n    private TableColumn<Barang, Integer>rowID;\r\n    @FXML\r\n    private TableColumn<Barang, String>rowBarang;\r\n    @FXML\r\n    private TableColumn<Barang, Double>rowModal;\r\n    @FXML\r\n    private TableColumn<Barang, Double>rowHarga;\r\n    @FXML\r\n    private TableColumn<Barang, Integer>rowStock;\r\n    @FXML\r\n    private TextField tfID_barang;\r\n    @FXML\r\n    private TextField tfHargaModal;\r\n    @FXML\r\n    private TextField tfHargaJual;\r\n    @FXML\r\n    private TextField tfNamaBarang;\r\n    @FXML\r\n    private Spinner<Integer> SpStockBarang;\r\n    @FXML\r\n    private Spinner<Integer> spJumlahBarang;\r\n    @FXML\r\n    private Button btnAddBarang;\r\n    @FXML\r\n    private Button btnUbahBarang;\r\n    @FXML\r\n    private Button btnHapusBarang;\r\n\r\n    DatabaseModel dbm ;\r\n\r\n    public void refreshTableBarang(){\r\n        ObservableList<Barang> barangs = dbm.getBarang();\r\n        rowID.setCellValueFactory(id->id.getValue().IDbarangProperty().asObject());\r\n        rowBarang.setCellValueFactory(nama->nama.getValue().nama_barangProperty());\r\n        rowModal.setCellValueFactory(modal->modal.getValue().modal_barangProperty().asObject());\r\n        rowHarga.setCellValueFactory(harga->harga.getValue().harga_jualProperty().asObject());\r\n        rowStock.setCellValueFactory(stock->stock.getValue().stock_barangProperty().asObject());\r\n        tableBarang.setItems(barangs);\r\n    }\r\n    private void setRoundedbutton(){\r\n        double size = 30;\r\n        btnADD.setShape(new Circle(size));\r\n        btnADD.setMinSize(2*size, 2*size);\r\n        btnADD.setMaxSize(2*size, 2*size);\r\n        btnClearCount.setShape(new Circle(size));\r\n        btnClearCount.setMinSize(2*size, 2*size);\r\n        btnClearCount.setMaxSize(2*size, 2*size);\r\n    }\r\n    @Override\r\n    public void initialize(URL url, ResourceBundle resourceBundle) {\r\n        setRoundedbutton();\r\n        tfID_barang.setEditable(false);\r\n        tfNamaBarang.setEditable(false);\r\n        tfHargaJual.setEditable(false);\r\n        tfHargaModal.setEditable(false);\r\n        SpStockBarang.setEditable(false);\r\n        SpinnerValueFactory<Integer>valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);\r\n        SpStockBarang.setValueFactory(valueFactory);\r\n        dbm = new DatabaseModel();\r\n        refreshTableBarang();\r\n        tableBarang.setOnMousePressed(mouseEvent -> {\r\n            tfID_barang.setText(String.valueOf(tableBarang.getSelectionModel().getSelectedItems().get(0).getIDbarang()));\r\n            tfNamaBarang.setText(tableBarang.getSelectionModel().getSelectedItems().get(0).getNama_barang());\r\n            tfHargaModal.setText(String.valueOf(tableBarang.getSelectionModel().getSelectedItems().get(0).getModal_barang()));\r\n            tfHargaJual.setText(String.valueOf(tableBarang.getSelectionModel().getSelectedItems().get(0).getHarga_jual()));\r\n            SpStockBarang.getValueFactory().setValue(tableBarang.getSelectionModel().getSelectedItems().get(0).getStock_barang());\r\n        });\r\n    }\r\n\r\n    public void handleLogoutAction(ActionEvent event) throws IOException {\r\n        Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource(\"LoginPage.fxml\")));\r\n        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();\r\n        Scene scene = new Scene(root);\r\n        stage.setScene(scene);\r\n        stage.show();\r\n    }\r\n\r\n    public void handleSimpanAction(ActionEvent event) {\r\n        if (!btnAddBarang.isDisable()){\r\n            if(tfNamaBarang.getText().trim().equals(\"\") && tfHargaJual.getText().trim().equals(\"\") && tfHargaModal.getText().trim().equals(\"\")){\r\n                JOptionPane.showMessageDialog(null, \"Harap Isi Data Barang dengan lengkap\",\"Warning\",JOptionPane.INFORMATION_MESSAGE);\r\n            }else{\r\n                dbm.tambahBarang(new Barang(Integer.parseInt(tfID_barang.getText().trim()),\r\n                        tfNamaBarang.getText().trim(),\r\n                        Double.parseDouble(tfHargaModal.getText().trim()),Double.parseDouble(tfHargaJual.getText().trim()),SpStockBarang.getValue()));\r\n                refreshTableBarang();\r\n                btnCancel.fire();\r\n            }\r\n        }else if(!btnUbahBarang.isDisable()){\r\n            if(tfNamaBarang.getText().trim().equals(\"\") && tfHargaJual.getText().trim().equals(\"\") && tfHargaModal.getText().trim().equals(\"\")){\r\n                JOptionPane.showMessageDialog(null, \"Harap Isi Data Barang dengan lengkap\",\"Warning\",JOptionPane.INFORMATION_MESSAGE);\r\n            }else{\r\n                dbm.updateBarang(new Barang(\r\n                        Integer.parseInt(tfID_barang.getText().trim()),\r\n                        tfNamaBarang.getText().trim(),\r\n                        Double.parseDouble(tfHargaModal.getText().trim()),\r\n                        Double.parseDouble(tfHargaJual.getText().trim()),\r\n                        SpStockBarang.getValue()));\r\n                refreshTableBarang();\r\n                btnCancel.fire();\r\n            }\r\n        }else{\r\n            dbm.deleteBarang(Integer.parseInt(tfID_barang.getText().trim()));\r\n            refreshTableBarang();\r\n            btnCancel.fire();\r\n        }\r\n    }\r\n\r\n    public void handleCancelAction(ActionEvent event) {\r\n        btnUbahBarang.setDisable(false);\r\n        btnHapusBarang.setDisable(false);\r\n        btnAddBarang.setDisable(false);\r\n        SpStockBarang.getValueFactory().setValue(1);\r\n        tfID_barang.clear();\r\n        tfHargaJual.clear();\r\n        tfNamaBarang.clear();\r\n        tfHargaModal.clear();\r\n        SpStockBarang.getValueFactory().setValue(1);\r\n    }\r\n\r\n    public void handleAddAction(ActionEvent event) {\r\n        tfNamaBarang.setEditable(true);\r\n        tfHargaJual.setEditable(true);\r\n        tfHargaModal.setEditable(true);\r\n        SpStockBarang.setEditable(true);\r\n        tfID_barang.setText(String.valueOf(dbm.getIdBarang()));\r\n        btnUbahBarang.setDisable(true);\r\n        btnHapusBarang.setDisable(true);\r\n    }\r\n\r\n    public void handleUpdateAction(ActionEvent event) {\r\n        tfNamaBarang.setEditable(true);\r\n        tfHargaJual.setEditable(true);\r\n        tfHargaModal.setEditable(true);\r\n        SpStockBarang.setEditable(true);\r\n        btnAddBarang.setDisable(true);\r\n        btnHapusBarang.setDisable(true);\r\n    }\r\n\r\n    public void handleDeleteAction(ActionEvent event) {\r\n        tfNamaBarang.setEditable(false);\r\n        tfHargaJual.setEditable(false);\r\n        tfHargaModal.setEditable(false);\r\n        SpStockBarang.setEditable(false);\r\n        btnUbahBarang.setDisable(true);\r\n        btnAddBarang.setDisable(true);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/toko/toko/Controller/ControlHome.java b/src/main/java/com/toko/toko/Controller/ControlHome.java
+--- a/src/main/java/com/toko/toko/Controller/ControlHome.java	
++++ b/src/main/java/com/toko/toko/Controller/ControlHome.java	
+@@ -2,10 +2,7 @@
+ 
+ 
+ import com.toko.toko.Main;
+-import com.toko.toko.Model.Barang;
+-import com.toko.toko.Model.BarangPenjualan;
+-import com.toko.toko.Model.DatabaseModel;
+-import com.toko.toko.Model.Hutang;
++import com.toko.toko.Model.*;
+ import javafx.collections.ObservableList;
+ import javafx.event.ActionEvent;
+ import javafx.fxml.FXML;
+@@ -15,13 +12,12 @@
+ import javafx.scene.Parent;
+ import javafx.scene.Scene;
+ import javafx.scene.control.*;
+-import javafx.scene.layout.AnchorPane;
+ import javafx.scene.shape.Circle;
+ import javafx.stage.Stage;
+-
+ import javax.swing.*;
+ import java.io.IOException;
+ import java.net.URL;
++import java.time.LocalDate;
+ import java.util.Objects;
+ import java.util.ResourceBundle;
+ 
+@@ -33,9 +29,9 @@
+     @FXML
+     public Button btnClearCount;
+     @FXML
+-    private Label lbTotalBelanja;
++    public TextField tfIDbarangKasir;
+     @FXML
+-    private TextField tfIDbarang;
++    private Label lbTotalBelanja;
+     @FXML
+     private TableView<BarangPenjualan> tbBelanja;
+     @FXML
+@@ -86,7 +82,8 @@
+     private Button btnUbahBarang;
+     @FXML
+     private Button btnHapusBarang;
+-
++    @FXML
++    private Button btnNewTransaksi;
+     DatabaseModel dbm ;
+ 
+     public void refreshTableBarang(){
+@@ -107,6 +104,12 @@
+         btnClearCount.setMinSize(2*size, 2*size);
+         btnClearCount.setMaxSize(2*size, 2*size);
+     }
++    private void setValueSP(){
++        SpinnerValueFactory<Integer>valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
++        SpStockBarang.setValueFactory(valueFactory);
++        SpinnerValueFactory<Integer>valueFactoryKasir = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
++        spJumlahBarang.setValueFactory(valueFactoryKasir);
++    }
+     @Override
+     public void initialize(URL url, ResourceBundle resourceBundle) {
+         setRoundedbutton();
+@@ -115,8 +118,7 @@
+         tfHargaJual.setEditable(false);
+         tfHargaModal.setEditable(false);
+         SpStockBarang.setEditable(false);
+-        SpinnerValueFactory<Integer>valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
+-        SpStockBarang.setValueFactory(valueFactory);
++        setValueSP();
+         dbm = new DatabaseModel();
+         refreshTableBarang();
+         tableBarang.setOnMousePressed(mouseEvent -> {
+@@ -127,7 +129,7 @@
+             SpStockBarang.getValueFactory().setValue(tableBarang.getSelectionModel().getSelectedItems().get(0).getStock_barang());
+         });
+     }
+-
++    @FXML
+     public void handleLogoutAction(ActionEvent event) throws IOException {
+         Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("LoginPage.fxml")));
+         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+@@ -135,8 +137,8 @@
+         stage.setScene(scene);
+         stage.show();
+     }
+-
+-    public void handleSimpanAction(ActionEvent event) {
++    @FXML
++    public void handleSimpanAction() {
+         if (!btnAddBarang.isDisable()){
+             if(tfNamaBarang.getText().trim().equals("") && tfHargaJual.getText().trim().equals("") && tfHargaModal.getText().trim().equals("")){
+                 JOptionPane.showMessageDialog(null, "Harap Isi Data Barang dengan lengkap","Warning",JOptionPane.INFORMATION_MESSAGE);
+@@ -166,8 +168,8 @@
+             btnCancel.fire();
+         }
+     }
+-
+-    public void handleCancelAction(ActionEvent event) {
++    @FXML
++    public void handleCancelAction() {
+         btnUbahBarang.setDisable(false);
+         btnHapusBarang.setDisable(false);
+         btnAddBarang.setDisable(false);
+@@ -178,8 +180,8 @@
+         tfHargaModal.clear();
+         SpStockBarang.getValueFactory().setValue(1);
+     }
+-
+-    public void handleAddAction(ActionEvent event) {
++    @FXML
++    public void handleAddAction() {
+         tfNamaBarang.setEditable(true);
+         tfHargaJual.setEditable(true);
+         tfHargaModal.setEditable(true);
+@@ -188,8 +190,8 @@
+         btnUbahBarang.setDisable(true);
+         btnHapusBarang.setDisable(true);
+     }
+-
+-    public void handleUpdateAction(ActionEvent event) {
++    @FXML
++    public void handleUpdateAction() {
+         tfNamaBarang.setEditable(true);
+         tfHargaJual.setEditable(true);
+         tfHargaModal.setEditable(true);
+@@ -197,8 +199,8 @@
+         btnAddBarang.setDisable(true);
+         btnHapusBarang.setDisable(true);
+     }
+-
+-    public void handleDeleteAction(ActionEvent event) {
++    @FXML
++    public void handleDeleteAction() {
+         tfNamaBarang.setEditable(false);
+         tfHargaJual.setEditable(false);
+         tfHargaModal.setEditable(false);
+@@ -206,4 +208,45 @@
+         btnUbahBarang.setDisable(true);
+         btnAddBarang.setDisable(true);
+     }
++    public void refreshTableKasir(){
++        ObservableList<BarangPenjualan> belanjas = dbm.getTransaksis();
++        colNamaarang.setCellValueFactory(nama->nama.getValue().nama_barangProperty());
++        colHargaSatuan.setCellValueFactory(harga->harga.getValue().harga_barangProperty().asObject());
++        colJumlaharang.setCellValueFactory(jumlah->jumlah.getValue().jumlahBarangProperty().asObject());
++        colTotalHarga.setCellValueFactory(total->total.getValue().total_hargaProperty().asObject());
++        tbBelanja.setItems(belanjas);
++    }
++    @FXML
++    public void handleAddBelanja() {
++        try {
++            dbm.selectBelanja(Integer.parseInt(tfIDbarangKasir.getText().trim()), spJumlahBarang.getValue());
++            refreshTableKasir();
++            refreshTableBarang();
++        }catch (Exception e){
++            System.out.println(e.getMessage());
++            System.out.println(e);
++        }
++    }
++    private int idTrx = 0;
++    @FXML
++    public void handleClearKasirAction() {
++        tfIDbarangKasir.clear();
++        spJumlahBarang.getValueFactory().setValue(1);
++    }
++    @FXML
++    public void handleCetakStruk() {
++        btnNewTransaksi.setDisable(false);
++        dbm.resetPenjualan();
++    }
++    @FXML
++    public void handleMakeTs() {
++        btnNewTransaksi.setDisable(true);
++        LocalDate date = LocalDate.now();
++        try {
++            idTrx = dbm.getIdTransaksi();
++            dbm.tambahTransaksi(new Transaksi(idTrx,date.toString()));
++        }catch (Exception e){
++
++        }
++    }
+ }
+Index: src/main/java/com/toko/toko/Model/BarangPenjualan.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.toko.toko.Model;\r\n\r\nimport javafx.beans.property.DoubleProperty;\r\nimport javafx.beans.property.IntegerProperty;\r\nimport javafx.beans.property.StringProperty;\r\n\r\npublic class BarangPenjualan {\r\n    private StringProperty nama_barang;\r\n    private DoubleProperty harga_barang;\r\n    private IntegerProperty jumlahBarang;\r\n    private DoubleProperty total_harga;\r\n\r\n    public BarangPenjualan(String nama_barang, double harga_barang, int jumlahBarang, double total_harga) {\r\n       setNama_barang(nama_barang);\r\n       setHarga_barang(harga_barang);\r\n       setJumlahBarang(jumlahBarang);\r\n       setTotal_harga(total_harga);\r\n    }\r\n\r\n    public String getNama_barang() {\r\n        return nama_barang.get();\r\n    }\r\n\r\n    public StringProperty nama_barangProperty() {\r\n        return nama_barang;\r\n    }\r\n\r\n    public void setNama_barang(String nama_barang) {\r\n        this.nama_barang.set(nama_barang);\r\n    }\r\n\r\n    public double getHarga_barang() {\r\n        return harga_barang.get();\r\n    }\r\n\r\n    public DoubleProperty harga_barangProperty() {\r\n        return harga_barang;\r\n    }\r\n\r\n    public void setHarga_barang(double harga_barang) {\r\n        this.harga_barang.set(harga_barang);\r\n    }\r\n\r\n    public int getJumlahBarang() {\r\n        return jumlahBarang.get();\r\n    }\r\n\r\n    public IntegerProperty jumlahBarangProperty() {\r\n        return jumlahBarang;\r\n    }\r\n\r\n    public void setJumlahBarang(int jumlahBarang) {\r\n        this.jumlahBarang.set(jumlahBarang);\r\n    }\r\n\r\n    public double getTotal_harga() {\r\n        return total_harga.get();\r\n    }\r\n\r\n    public DoubleProperty total_hargaProperty() {\r\n        return total_harga;\r\n    }\r\n\r\n    public void setTotal_harga(double total_harga) {\r\n        this.total_harga.set(total_harga);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/toko/toko/Model/BarangPenjualan.java b/src/main/java/com/toko/toko/Model/BarangPenjualan.java
+--- a/src/main/java/com/toko/toko/Model/BarangPenjualan.java	
++++ b/src/main/java/com/toko/toko/Model/BarangPenjualan.java	
+@@ -1,14 +1,12 @@
+ package com.toko.toko.Model;
+ 
+-import javafx.beans.property.DoubleProperty;
+-import javafx.beans.property.IntegerProperty;
+-import javafx.beans.property.StringProperty;
++import javafx.beans.property.*;
+ 
+ public class BarangPenjualan {
+-    private StringProperty nama_barang;
+-    private DoubleProperty harga_barang;
+-    private IntegerProperty jumlahBarang;
+-    private DoubleProperty total_harga;
++    private StringProperty nama_barang= new SimpleStringProperty();
++    private DoubleProperty harga_barang = new SimpleDoubleProperty();
++    private IntegerProperty jumlahBarang = new SimpleIntegerProperty();
++    private DoubleProperty total_harga = new SimpleDoubleProperty();
+ 
+     public BarangPenjualan(String nama_barang, double harga_barang, int jumlahBarang, double total_harga) {
+        setNama_barang(nama_barang);
+Index: src/main/java/META-INF/MANIFEST.MF
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/META-INF/MANIFEST.MF b/src/main/java/META-INF/MANIFEST.MF
+new file mode 100644
+--- /dev/null	
++++ b/src/main/java/META-INF/MANIFEST.MF	
+@@ -0,0 +1,3 @@
++Manifest-Version: 1.0
++Main-Class: Main
++
+Index: src/main/resources/com/toko/toko/HomePage.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.*?>\r\n<?import javafx.scene.image.*?>\r\n<?import javafx.scene.layout.*?>\r\n<?import javafx.scene.text.*?>\r\n\r\n<AnchorPane prefHeight=\"612.0\" prefWidth=\"947.0\" xmlns=\"http://javafx.com/javafx/11.0.2\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"com.toko.toko.Controller.ControlHome\">\r\n    <TabPane layoutY=\"43.0\" prefHeight=\"574.0\" prefWidth=\"947.0\" tabClosingPolicy=\"UNAVAILABLE\">\r\n        <Tab text=\"Kasir\">\r\n            <AnchorPane minHeight=\"0.0\" minWidth=\"0.0\" prefHeight=\"180.0\" prefWidth=\"200.0\" style=\"-fx-background-color: #FFFDDE;\">\r\n                <TextField fx:id=\"tfIDbarang\" layoutX=\"120.0\" layoutY=\"106.0\" />\r\n            <Label layoutX=\"22.0\" layoutY=\"110.0\" text=\"ID Barang\" />\r\n            <Spinner fx:id=\"spJumlahBarang\" layoutX=\"120.0\" layoutY=\"175.0\" />\r\n            <Label layoutX=\"22.0\" layoutY=\"179.0\" text=\"Jumlah Barang\" />\r\n            <TableView fx:id=\"tbBelanja\" layoutX=\"506.0\" prefHeight=\"482.0\" prefWidth=\"442.0\" style=\"-fx-alignment: center;\">\r\n              <columns>\r\n                <TableColumn fx:id=\"colNamaarang\" prefWidth=\"131.20001220703125\" style=\"-fx-alignment: center;\" text=\"Nama Barang\" />\r\n                <TableColumn fx:id=\"colHargaSatuan\" prefWidth=\"110.39996337890625\" style=\"-fx-alignment: center;\" text=\"Harga Satuan\" />\r\n                  <TableColumn fx:id=\"colJumlaharang\" prefWidth=\"90.39996337890625\" style=\"-fx-alignment: center;\" text=\"Jumlah Barang\" />\r\n                  <TableColumn fx:id=\"colTotalHarga\" prefWidth=\"111.2000732421875\" style=\"-fx-alignment: center;\" text=\"Total Harga\" />\r\n              </columns>\r\n            </TableView>\r\n            <Label layoutX=\"506.0\" layoutY=\"488.0\" text=\"Total Belanja : \">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"29.0\" />\r\n               </font>\r\n            </Label>\r\n            <Label fx:id=\"lbTotalBelanja\" layoutX=\"708.0\" layoutY=\"488.0\" prefHeight=\"43.0\" prefWidth=\"218.0\" text=\"0.0\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"29.0\" />\r\n               </font>\r\n            </Label>\r\n            <Button fx:id=\"btnADD\" layoutX=\"222.0\" layoutY=\"395.0\" mnemonicParsing=\"false\" prefHeight=\"58.0\" prefWidth=\"89.0\" style=\"-fx-background-color: #EF2F88;\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"28.0\" />\r\n               </font>\r\n               <graphic>\r\n                   <ImageView fitHeight=\"66.0\" fitWidth=\"87.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                       <Image url=\"@images/add.png\" />\r\n                   </ImageView>\r\n               </graphic>\r\n            </Button>\r\n            <Button fx:id=\"btnClearCount\" layoutX=\"61.0\" layoutY=\"397.0\" mnemonicParsing=\"false\" prefHeight=\"58.0\" prefWidth=\"89.0\" style=\"-fx-background-color: #470D21;\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"15.0\" />\r\n               </font>\r\n               <graphic>\r\n                   <ImageView fitHeight=\"66.0\" fitWidth=\"87.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                       <Image url=\"@images/error.png\" />\r\n                   </ImageView>\r\n               </graphic>\r\n            </Button>\r\n            </AnchorPane>\r\n        </Tab>\r\n        <Tab text=\"Daftar Barang\">\r\n            <AnchorPane minHeight=\"0.0\" minWidth=\"0.0\" prefHeight=\"180.0\" prefWidth=\"200.0\" style=\"-fx-background-color: #B1D0E0;\">\r\n                <TableView fx:id=\"tableBarang\" layoutX=\"-1.0\" prefHeight=\"322.0\" prefWidth=\"948.0\">\r\n                    <columns>\r\n                        <TableColumn fx:id=\"rowID\" prefWidth=\"187.1999785900116\" style=\"-fx-alignment: center;\" text=\"ID BARANG\" />\r\n                        <TableColumn fx:id=\"rowBarang\" prefWidth=\"243.2000274658203\" style=\"-fx-alignment: center;\" text=\"NAMA BARANG\" />\r\n                        <TableColumn fx:id=\"rowModal\" prefWidth=\"168.80001831054688\" style=\"-fx-alignment: center;\" text=\"Harga Modal\" />\r\n                        <TableColumn fx:id=\"rowHarga\" prefWidth=\"215.20001220703125\" style=\"-fx-alignment: center;\" text=\"Harga Jual\" />\r\n                        <TableColumn fx:id=\"rowStock\" prefWidth=\"133.60003662109375\" style=\"-fx-alignment: center;\" text=\"Stock Barang\" />\r\n                    </columns>\r\n                </TableView>\r\n            <TextField fx:id=\"tfID_barang\" layoutX=\"102.0\" layoutY=\"347.0\" />\r\n            <Label layoutX=\"14.0\" layoutY=\"351.0\" text=\"ID Barang\" />\r\n            <Label layoutX=\"14.0\" layoutY=\"412.0\" text=\"Nama Barang\" />\r\n            <TextField fx:id=\"tfHargaModal\" layoutX=\"377.0\" layoutY=\"347.0\" />\r\n            <TextField fx:id=\"tfHargaJual\" layoutX=\"377.0\" layoutY=\"408.0\" />\r\n            <TextField fx:id=\"tfNamaBarang\" layoutX=\"102.0\" layoutY=\"408.0\" />\r\n            <Label layoutX=\"280.0\" layoutY=\"412.0\" text=\"Harga Jual\" />\r\n            <Label layoutX=\"280.0\" layoutY=\"351.0\" text=\"Harga Modal\" />\r\n            <Spinner fx:id=\"SpStockBarang\" layoutX=\"102.0\" layoutY=\"465.0\" />\r\n            <Label layoutX=\"15.0\" layoutY=\"469.0\" text=\"Stock Barang\" />\r\n            <Button layoutX=\"315.0\" layoutY=\"480.0\" mnemonicParsing=\"false\" onAction=\"#handleSimpanAction\" prefHeight=\"38.0\" prefWidth=\"91.0\" style=\"-fx-background-color: white;\" text=\"Save\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"17.0\" />\r\n               </font>\r\n               <graphic>\r\n                   <ImageView fitHeight=\"19.0\" fitWidth=\"26.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                       <Image url=\"@images/floppy-disk.png\" />\r\n                   </ImageView>\r\n               </graphic></Button>\r\n            <Button fx:id=\"btnCancel\" layoutX=\"451.0\" layoutY=\"478.0\" mnemonicParsing=\"false\" onAction=\"#handleCancelAction\" prefHeight=\"43.0\" prefWidth=\"107.0\" style=\"-fx-background-color: white;\" text=\"Cancel\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"17.0\" />\r\n               </font>\r\n               <graphic>\r\n                   <ImageView fitHeight=\"27.0\" fitWidth=\"25.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                       <Image url=\"@images/cancel.png\" />\r\n                   </ImageView>\r\n               </graphic></Button>\r\n            <Button fx:id=\"btnAddBarang\" layoutX=\"757.0\" layoutY=\"334.0\" mnemonicParsing=\"false\" onAction=\"#handleAddAction\" prefHeight=\"51.0\" prefWidth=\"132.0\" style=\"-fx-background-color: #270082;\" text=\"Tambah Barang\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"13.0\" />\r\n               </font></Button>\r\n            <Button fx:id=\"btnUbahBarang\" layoutX=\"757.0\" layoutY=\"404.0\" mnemonicParsing=\"false\" onAction=\"#handleUpdateAction\" prefHeight=\"51.0\" prefWidth=\"132.0\" style=\"-fx-background-color: #8B9A46;\" text=\"Ubah Barang\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"13.0\" />\r\n               </font></Button>\r\n            <Button fx:id=\"btnHapusBarang\" layoutX=\"757.0\" layoutY=\"474.0\" mnemonicParsing=\"false\" onAction=\"#handleDeleteAction\" prefHeight=\"51.0\" prefWidth=\"132.0\" style=\"-fx-background-color: #D22779;\" text=\"Hapus Barang\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"13.0\" />\r\n               </font></Button>\r\n            </AnchorPane>\r\n        </Tab>\r\n        <Tab text=\"Daftar Hutang\">\r\n            <AnchorPane minHeight=\"0.0\" minWidth=\"0.0\" prefHeight=\"180.0\" prefWidth=\"200.0\" style=\"-fx-background-color: #E4CDA7;\">\r\n                <TableView fx:id=\"tableHutang\" prefHeight=\"350.0\" prefWidth=\"948.0\">\r\n                    <columns>\r\n                        <TableColumn fx:id=\"colNama\" prefWidth=\"261.60001826286316\" text=\"Nama\" />\r\n                        <TableColumn fx:id=\"colAlamat\" minWidth=\"0.0\" prefWidth=\"354.4000244140625\" text=\"Alamat\" />\r\n                        <TableColumn fx:id=\"colJumlah\" prefWidth=\"148.0\" text=\"Jumlah hutang\" />\r\n                        <TableColumn fx:id=\"colTanggal\" prefWidth=\"184.00006103515625\" text=\"Tanggal Hutang\" />\r\n                    </columns>\r\n                </TableView>\r\n            </AnchorPane>\r\n        </Tab>\r\n    </TabPane>\r\n    <Button layoutX=\"828.0\" mnemonicParsing=\"false\" onAction=\"#handleLogoutAction\" prefHeight=\"42.0\" prefWidth=\"120.0\" style=\"-fx-background-color: #FC4F4F;\" text=\"Keluar\" textFill=\"WHITE\">\r\n      <font>\r\n         <Font name=\"System Bold\" size=\"19.0\" />\r\n      </font>\r\n      <graphic>\r\n          <ImageView fitHeight=\"38.0\" fitWidth=\"30.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n              <Image url=\"@images/log-out.png\" />\r\n          </ImageView>\r\n      </graphic>\r\n   </Button>\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/com/toko/toko/HomePage.fxml b/src/main/resources/com/toko/toko/HomePage.fxml
+--- a/src/main/resources/com/toko/toko/HomePage.fxml	
++++ b/src/main/resources/com/toko/toko/HomePage.fxml	
+@@ -1,37 +1,47 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.image.*?>
+-<?import javafx.scene.layout.*?>
+-<?import javafx.scene.text.*?>
++<?import javafx.scene.control.Button?>
++<?import javafx.scene.control.Label?>
++<?import javafx.scene.control.Spinner?>
++<?import javafx.scene.control.Tab?>
++<?import javafx.scene.control.TabPane?>
++<?import javafx.scene.control.TableColumn?>
++<?import javafx.scene.control.TableView?>
++<?import javafx.scene.control.TextField?>
++<?import javafx.scene.image.Image?>
++<?import javafx.scene.image.ImageView?>
++<?import javafx.scene.layout.AnchorPane?>
++<?import javafx.scene.text.Font?>
+ 
+-<AnchorPane prefHeight="612.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toko.toko.Controller.ControlHome">
++<AnchorPane prefHeight="612.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toko.toko.Controller.ControlHome">
+     <TabPane layoutY="43.0" prefHeight="574.0" prefWidth="947.0" tabClosingPolicy="UNAVAILABLE">
+         <Tab text="Kasir">
+-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #FFFDDE;">
+-                <TextField fx:id="tfIDbarang" layoutX="120.0" layoutY="106.0" />
+-            <Label layoutX="22.0" layoutY="110.0" text="ID Barang" />
+-            <Spinner fx:id="spJumlahBarang" layoutX="120.0" layoutY="175.0" />
+-            <Label layoutX="22.0" layoutY="179.0" text="Jumlah Barang" />
+-            <TableView fx:id="tbBelanja" layoutX="506.0" prefHeight="482.0" prefWidth="442.0" style="-fx-alignment: center;">
++            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #FF9F45;">
++                <TextField fx:id="tfIDbarangKasir" layoutX="150.0" layoutY="126.0" prefHeight="26.0" prefWidth="211.0" />
++            <Label layoutX="14.0" layoutY="130.0" text="ID Barang" textFill="WHITE">
++               <font>
++                  <Font name="Britannic Bold" size="17.0" />
++               </font></Label>
++            <Spinner fx:id="spJumlahBarang" layoutX="150.0" layoutY="184.0" prefHeight="26.0" prefWidth="113.0" />
++            <TableView fx:id="tbBelanja" layoutX="484.0" prefHeight="482.0" prefWidth="462.0" style="-fx-alignment: center;">
+               <columns>
+-                <TableColumn fx:id="colNamaarang" prefWidth="131.20001220703125" style="-fx-alignment: center;" text="Nama Barang" />
+-                <TableColumn fx:id="colHargaSatuan" prefWidth="110.39996337890625" style="-fx-alignment: center;" text="Harga Satuan" />
+-                  <TableColumn fx:id="colJumlaharang" prefWidth="90.39996337890625" style="-fx-alignment: center;" text="Jumlah Barang" />
+-                  <TableColumn fx:id="colTotalHarga" prefWidth="111.2000732421875" style="-fx-alignment: center;" text="Total Harga" />
++                <TableColumn fx:id="colNamaarang" prefWidth="156.00003051757812" style="-fx-alignment: center;" text="Nama Barang" />
++                <TableColumn fx:id="colHargaSatuan" prefWidth="127.99993896484375" style="-fx-alignment: center;" text="Harga Satuan" />
++                  <TableColumn fx:id="colJumlaharang" prefWidth="56.8001708984375" style="-fx-alignment: center;" text="Jumlah" />
++                  <TableColumn fx:id="colTotalHarga" prefWidth="121.599853515625" style="-fx-alignment: center;" text="Total Harga" />
+               </columns>
+             </TableView>
+-            <Label layoutX="506.0" layoutY="488.0" text="Total Belanja : ">
++            <Label layoutX="484.0" layoutY="488.0" text="Total Belanja : " textFill="WHITE">
+                <font>
+                   <Font name="System Bold" size="29.0" />
+                </font>
+             </Label>
+-            <Label fx:id="lbTotalBelanja" layoutX="708.0" layoutY="488.0" prefHeight="43.0" prefWidth="218.0" text="0.0">
++            <Label fx:id="lbTotalBelanja" layoutX="686.0" layoutY="488.0" prefHeight="43.0" prefWidth="218.0" text="0.0" textFill="WHITE">
+                <font>
+                   <Font name="System Bold" size="29.0" />
+                </font>
+             </Label>
+-            <Button fx:id="btnADD" layoutX="222.0" layoutY="395.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="89.0" style="-fx-background-color: #EF2F88;" textFill="WHITE">
++            <Button fx:id="btnADD" layoutX="221.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleAddBelanja" prefHeight="70.0" prefWidth="77.0" style="-fx-background-color: #EF2F88;" textFill="WHITE">
+                <font>
+                   <Font name="System Bold" size="28.0" />
+                </font>
+@@ -41,7 +51,7 @@
+                    </ImageView>
+                </graphic>
+             </Button>
+-            <Button fx:id="btnClearCount" layoutX="61.0" layoutY="397.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="89.0" style="-fx-background-color: #470D21;" textFill="WHITE">
++            <Button fx:id="btnClearCount" layoutX="60.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleClearKasirAction" prefHeight="58.0" prefWidth="89.0" style="-fx-background-color: #470D21;" textFill="WHITE">
+                <font>
+                   <Font name="System Bold" size="15.0" />
+                </font>
+@@ -50,6 +60,26 @@
+                        <Image url="@images/error.png" />
+                    </ImageView>
+                </graphic>
++            </Button>
++            <Label layoutX="14.0" layoutY="188.0" text="Jumlah Barang" textFill="WHITE">
++               <font>
++                  <Font name="Britannic Bold" size="17.0" />
++               </font>
++            </Label>
++            <Label layoutX="36.0" layoutY="14.0" text="Kasir Toko Rian" textFill="WHITE">
++               <font>
++                  <Font name="Century Schoolbook Bold" size="34.0" />
++               </font>
++            </Label>
++            <Button fx:id="btnNewTransaksi" layoutX="9.0" layoutY="447.0" mnemonicParsing="false" onAction="#handleMakeTs" style="-fx-background-color: #313552;" text="Transaksi Baru" textFill="WHITE">
++               <font>
++                  <Font name="System Bold" size="15.0" />
++               </font>
++            </Button>
++            <Button layoutX="361.0" layoutY="445.0" mnemonicParsing="false" onAction="#handleCetakStruk" style="-fx-background-color: #96CEB4;" text="Cetak Struk" textFill="#fffefe">
++               <font>
++                  <Font name="System Bold" size="16.0" />
++               </font>
+             </Button>
+             </AnchorPane>
+         </Tab>
+Index: .idea/artifacts/Toko_jar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/Toko_jar.xml b/.idea/artifacts/Toko_jar.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/artifacts/Toko_jar.xml	
+@@ -0,0 +1,78 @@
++<component name="ArtifactManager">
++  <artifact type="jar" name="Toko:jar">
++    <output-path>$PROJECT_DIR$/out/artifacts/Toko_jar</output-path>
++    <root id="archive" name="Toko.jar">
++      <element id="directory" name="META-INF">
++        <element id="file-copy" path="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" />
++      </element>
++      <element id="module-output" name="Toko" />
++      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/17.0.2/javafx-fxml-17.0.2-win.jar" path-in-jar="/" />
++      <element id="extracted-dir" path="$PROJECT_DIR$/lib/mysql-connector-java-8.0.20.jar" path-in-jar="/" />
++      <element id="extracted-dir" path="$PROJECT_DIR$/lib/protobuf-java-3.6.1.jar" path-in-jar="/" />
++      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/17-ea+11/javafx-base-17-ea+11-win.jar" path-in-jar="/" />
++      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/17.0.2/javafx-controls-17.0.2-win.jar" path-in-jar="/" />
++      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/17-ea+11/javafx-base-17-ea+11.jar" path-in-jar="/" />
++      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/17.0.2/javafx-fxml-17.0.2.jar" path-in-jar="/" />
++      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/17.0.2/javafx-controls-17.0.2.jar" path-in-jar="/" />
++      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/17-ea+11/javafx-graphics-17-ea+11.jar" path-in-jar="/" />
++      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/17-ea+11/javafx-graphics-17-ea+11-win.jar" path-in-jar="/" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-console-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-console-l1-2-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-datetime-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-debug-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-errorhandling-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-file-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-file-l1-2-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-file-l2-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-handle-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-heap-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-interlocked-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-libraryloader-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-localization-l1-2-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-memory-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-namedpipe-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-processenvironment-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-processthreads-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-processthreads-l1-1-1.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-profile-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-rtlsupport-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-string-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-synch-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-synch-l1-2-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-sysinfo-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-timezone-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-core-util-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-conio-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-convert-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-environment-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-filesystem-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-heap-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-locale-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-math-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-multibyte-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-private-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-process-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-runtime-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-stdio-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-string-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-time-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/api-ms-win-crt-utility-l1-1-0.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/decora_sse.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/fxplugins.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/glass.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/glib-lite.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/gstreamer-lite.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/javafx_font.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/javafx_iio.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/jfxmedia.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/jfxwebkit.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/msvcp140.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/prism_common.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/prism_d3d.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/prism_sw.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/ucrtbase.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/vcruntime140.dll" />
++      <element id="file-copy" path="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/vcruntime140_1.dll" />
++    </root>
++  </artifact>
++</component>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"da6edf39-f5c3-4420-8ef3-ae1d24640fc9\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/com/toko/toko/images/add.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/com/toko/toko/images/cancel.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/com/toko/toko/images/error.png\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/com/toko/toko/images/floppy-disk.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/toko/toko/Model/DatabaseModel.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/toko/toko/Model/DatabaseModel.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome$1.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/toko/toko/Main.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/toko/toko/Main.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/toko/toko/Model/DatabaseModel.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/toko/toko/Model/DatabaseModel.class\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"FxmlFile\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"24g1i4Cl6EyB1CA6OxlfUhSY7ln\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"ASKED_ADD_EXTERNAL_FILES\" value=\"true\" />\r\n    <property name=\"DatabaseDriversLRU\" value=\"mysql\" />\r\n    <property name=\"Downloaded.Files.Path.Enabled\" value=\"true\" />\r\n    <property name=\"Repository.Attach.Annotations\" value=\"false\" />\r\n    <property name=\"Repository.Attach.JavaDocs\" value=\"false\" />\r\n    <property name=\"Repository.Attach.Sources\" value=\"false\" />\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"ToolWindowRun.ShowToolbar\" value=\"false\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/src/main/resources/com/toko/toko/images\" />\r\n    <property name=\"project.structure.last.edited\" value=\"Libraries\" />\r\n    <property name=\"project.structure.proportion\" value=\"0.0\" />\r\n    <property name=\"project.structure.side.proportion\" value=\"0.3448276\" />\r\n  </component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\Java\\SI_Toko\\src\\main\\resources\\com\\toko\\toko\\images\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\Java\\SI_Toko\\src\\main\\resources\\com\\toko\\toko\\images\" />\r\n      <recent name=\"D:\\Java\\SI_Toko\\src\\main\\resources\\com\\toko\\toko\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"16\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.toko.toko.Main\" />\r\n      <module name=\"Toko\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"com.toko.toko.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Main\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"da6edf39-f5c3-4420-8ef3-ae1d24640fc9\" name=\"Changes\" comment=\"\" />\r\n      <created>1644037545207</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1644037545207</updated>\r\n      <workItem from=\"1644037547739\" duration=\"1496000\" />\r\n      <workItem from=\"1644039238679\" duration=\"2037000\" />\r\n      <workItem from=\"1644041293123\" duration=\"6224000\" />\r\n      <workItem from=\"1644047855354\" duration=\"1718000\" />\r\n      <workItem from=\"1644057096315\" duration=\"6134000\" />\r\n      <workItem from=\"1644065992528\" duration=\"1290000\" />\r\n      <workItem from=\"1644072941016\" duration=\"4797000\" />\r\n      <workItem from=\"1644109671330\" duration=\"9654000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -1,23 +1,26 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="ArtifactsWorkspaceSettings">
++    <artifacts-to-build>
++      <artifact name="Toko:jar" />
++    </artifacts-to-build>
++  </component>
+   <component name="AutoImportSettings">
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="da6edf39-f5c3-4420-8ef3-ae1d24640fc9" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/images/add.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/images/cancel.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/images/error.png" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/images/floppy-disk.png" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Toko_jar.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Main.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/BarangPenjualan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/BarangPenjualan.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/DatabaseModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/DatabaseModel.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/transaksi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/Transaksi.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome$1.class" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Main.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Model/DatabaseModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Model/DatabaseModel.class" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -56,10 +59,10 @@
+     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+     <property name="ToolWindowRun.ShowToolbar" value="false" />
+     <property name="WebServerToolWindowFactoryState" value="false" />
+-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/com/toko/toko/images" />
+-    <property name="project.structure.last.edited" value="Libraries" />
+-    <property name="project.structure.proportion" value="0.0" />
+-    <property name="project.structure.side.proportion" value="0.3448276" />
++    <property name="last_opened_file_path" value="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/vcruntime140_1.dll" />
++    <property name="project.structure.last.edited" value="Artifacts" />
++    <property name="project.structure.proportion" value="0.15" />
++    <property name="project.structure.side.proportion" value="0.17931035" />
+   </component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+@@ -107,7 +110,11 @@
+       <workItem from="1644057096315" duration="6134000" />
+       <workItem from="1644065992528" duration="1290000" />
+       <workItem from="1644072941016" duration="4797000" />
+-      <workItem from="1644109671330" duration="9654000" />
++      <workItem from="1644109671330" duration="11904000" />
++      <workItem from="1644131634434" duration="1409000" />
++      <workItem from="1644151571088" duration="40000" />
++      <workItem from="1644187514452" duration="2276000" />
++      <workItem from="1644197968230" duration="6079000" />
+     </task>
+     <servers />
+   </component>
+Index: target/classes/com/toko/toko/HomePage.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.*?>\r\n<?import javafx.scene.image.*?>\r\n<?import javafx.scene.layout.*?>\r\n<?import javafx.scene.text.*?>\r\n\r\n<AnchorPane prefHeight=\"612.0\" prefWidth=\"947.0\" xmlns=\"http://javafx.com/javafx/11.0.2\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"com.toko.toko.Controller.ControlHome\">\r\n    <TabPane layoutY=\"43.0\" prefHeight=\"574.0\" prefWidth=\"947.0\" tabClosingPolicy=\"UNAVAILABLE\">\r\n        <Tab text=\"Kasir\">\r\n            <AnchorPane minHeight=\"0.0\" minWidth=\"0.0\" prefHeight=\"180.0\" prefWidth=\"200.0\" style=\"-fx-background-color: #FFFDDE;\">\r\n                <TextField fx:id=\"tfIDbarang\" layoutX=\"120.0\" layoutY=\"106.0\" />\r\n            <Label layoutX=\"22.0\" layoutY=\"110.0\" text=\"ID Barang\" />\r\n            <Spinner fx:id=\"spJumlahBarang\" layoutX=\"120.0\" layoutY=\"175.0\" />\r\n            <Label layoutX=\"22.0\" layoutY=\"179.0\" text=\"Jumlah Barang\" />\r\n            <TableView fx:id=\"tbBelanja\" layoutX=\"506.0\" prefHeight=\"482.0\" prefWidth=\"442.0\" style=\"-fx-alignment: center;\">\r\n              <columns>\r\n                <TableColumn fx:id=\"colNamaarang\" prefWidth=\"131.20001220703125\" style=\"-fx-alignment: center;\" text=\"Nama Barang\" />\r\n                <TableColumn fx:id=\"colHargaSatuan\" prefWidth=\"110.39996337890625\" style=\"-fx-alignment: center;\" text=\"Harga Satuan\" />\r\n                  <TableColumn fx:id=\"colJumlaharang\" prefWidth=\"90.39996337890625\" style=\"-fx-alignment: center;\" text=\"Jumlah Barang\" />\r\n                  <TableColumn fx:id=\"colTotalHarga\" prefWidth=\"111.2000732421875\" style=\"-fx-alignment: center;\" text=\"Total Harga\" />\r\n              </columns>\r\n            </TableView>\r\n            <Label layoutX=\"506.0\" layoutY=\"488.0\" text=\"Total Belanja : \">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"29.0\" />\r\n               </font>\r\n            </Label>\r\n            <Label fx:id=\"lbTotalBelanja\" layoutX=\"708.0\" layoutY=\"488.0\" prefHeight=\"43.0\" prefWidth=\"218.0\" text=\"0.0\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"29.0\" />\r\n               </font>\r\n            </Label>\r\n            <Button fx:id=\"btnADD\" layoutX=\"222.0\" layoutY=\"395.0\" mnemonicParsing=\"false\" prefHeight=\"58.0\" prefWidth=\"89.0\" style=\"-fx-background-color: #EF2F88;\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"28.0\" />\r\n               </font>\r\n               <graphic>\r\n                   <ImageView fitHeight=\"66.0\" fitWidth=\"87.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                       <Image url=\"@images/add.png\" />\r\n                   </ImageView>\r\n               </graphic>\r\n            </Button>\r\n            <Button fx:id=\"btnClearCount\" layoutX=\"61.0\" layoutY=\"397.0\" mnemonicParsing=\"false\" prefHeight=\"58.0\" prefWidth=\"89.0\" style=\"-fx-background-color: #470D21;\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"15.0\" />\r\n               </font>\r\n               <graphic>\r\n                   <ImageView fitHeight=\"66.0\" fitWidth=\"87.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                       <Image url=\"@images/error.png\" />\r\n                   </ImageView>\r\n               </graphic>\r\n            </Button>\r\n            </AnchorPane>\r\n        </Tab>\r\n        <Tab text=\"Daftar Barang\">\r\n            <AnchorPane minHeight=\"0.0\" minWidth=\"0.0\" prefHeight=\"180.0\" prefWidth=\"200.0\" style=\"-fx-background-color: #B1D0E0;\">\r\n                <TableView fx:id=\"tableBarang\" layoutX=\"-1.0\" prefHeight=\"322.0\" prefWidth=\"948.0\">\r\n                    <columns>\r\n                        <TableColumn fx:id=\"rowID\" prefWidth=\"187.1999785900116\" style=\"-fx-alignment: center;\" text=\"ID BARANG\" />\r\n                        <TableColumn fx:id=\"rowBarang\" prefWidth=\"243.2000274658203\" style=\"-fx-alignment: center;\" text=\"NAMA BARANG\" />\r\n                        <TableColumn fx:id=\"rowModal\" prefWidth=\"168.80001831054688\" style=\"-fx-alignment: center;\" text=\"Harga Modal\" />\r\n                        <TableColumn fx:id=\"rowHarga\" prefWidth=\"215.20001220703125\" style=\"-fx-alignment: center;\" text=\"Harga Jual\" />\r\n                        <TableColumn fx:id=\"rowStock\" prefWidth=\"133.60003662109375\" style=\"-fx-alignment: center;\" text=\"Stock Barang\" />\r\n                    </columns>\r\n                </TableView>\r\n            <TextField fx:id=\"tfID_barang\" layoutX=\"102.0\" layoutY=\"347.0\" />\r\n            <Label layoutX=\"14.0\" layoutY=\"351.0\" text=\"ID Barang\" />\r\n            <Label layoutX=\"14.0\" layoutY=\"412.0\" text=\"Nama Barang\" />\r\n            <TextField fx:id=\"tfHargaModal\" layoutX=\"377.0\" layoutY=\"347.0\" />\r\n            <TextField fx:id=\"tfHargaJual\" layoutX=\"377.0\" layoutY=\"408.0\" />\r\n            <TextField fx:id=\"tfNamaBarang\" layoutX=\"102.0\" layoutY=\"408.0\" />\r\n            <Label layoutX=\"280.0\" layoutY=\"412.0\" text=\"Harga Jual\" />\r\n            <Label layoutX=\"280.0\" layoutY=\"351.0\" text=\"Harga Modal\" />\r\n            <Spinner fx:id=\"SpStockBarang\" layoutX=\"102.0\" layoutY=\"465.0\" />\r\n            <Label layoutX=\"15.0\" layoutY=\"469.0\" text=\"Stock Barang\" />\r\n            <Button layoutX=\"315.0\" layoutY=\"480.0\" mnemonicParsing=\"false\" onAction=\"#handleSimpanAction\" prefHeight=\"38.0\" prefWidth=\"91.0\" style=\"-fx-background-color: white;\" text=\"Save\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"17.0\" />\r\n               </font>\r\n               <graphic>\r\n                   <ImageView fitHeight=\"19.0\" fitWidth=\"26.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                       <Image url=\"@images/floppy-disk.png\" />\r\n                   </ImageView>\r\n               </graphic></Button>\r\n            <Button fx:id=\"btnCancel\" layoutX=\"451.0\" layoutY=\"478.0\" mnemonicParsing=\"false\" onAction=\"#handleCancelAction\" prefHeight=\"43.0\" prefWidth=\"107.0\" style=\"-fx-background-color: white;\" text=\"Cancel\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"17.0\" />\r\n               </font>\r\n               <graphic>\r\n                   <ImageView fitHeight=\"27.0\" fitWidth=\"25.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                       <Image url=\"@images/cancel.png\" />\r\n                   </ImageView>\r\n               </graphic></Button>\r\n            <Button fx:id=\"btnAddBarang\" layoutX=\"757.0\" layoutY=\"334.0\" mnemonicParsing=\"false\" onAction=\"#handleAddAction\" prefHeight=\"51.0\" prefWidth=\"132.0\" style=\"-fx-background-color: #270082;\" text=\"Tambah Barang\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"13.0\" />\r\n               </font></Button>\r\n            <Button fx:id=\"btnUbahBarang\" layoutX=\"757.0\" layoutY=\"404.0\" mnemonicParsing=\"false\" onAction=\"#handleUpdateAction\" prefHeight=\"51.0\" prefWidth=\"132.0\" style=\"-fx-background-color: #8B9A46;\" text=\"Ubah Barang\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"13.0\" />\r\n               </font></Button>\r\n            <Button fx:id=\"btnHapusBarang\" layoutX=\"757.0\" layoutY=\"474.0\" mnemonicParsing=\"false\" onAction=\"#handleDeleteAction\" prefHeight=\"51.0\" prefWidth=\"132.0\" style=\"-fx-background-color: #D22779;\" text=\"Hapus Barang\" textFill=\"WHITE\">\r\n               <font>\r\n                  <Font name=\"System Bold\" size=\"13.0\" />\r\n               </font></Button>\r\n            </AnchorPane>\r\n        </Tab>\r\n        <Tab text=\"Daftar Hutang\">\r\n            <AnchorPane minHeight=\"0.0\" minWidth=\"0.0\" prefHeight=\"180.0\" prefWidth=\"200.0\" style=\"-fx-background-color: #E4CDA7;\">\r\n                <TableView fx:id=\"tableHutang\" prefHeight=\"350.0\" prefWidth=\"948.0\">\r\n                    <columns>\r\n                        <TableColumn fx:id=\"colNama\" prefWidth=\"261.60001826286316\" text=\"Nama\" />\r\n                        <TableColumn fx:id=\"colAlamat\" minWidth=\"0.0\" prefWidth=\"354.4000244140625\" text=\"Alamat\" />\r\n                        <TableColumn fx:id=\"colJumlah\" prefWidth=\"148.0\" text=\"Jumlah hutang\" />\r\n                        <TableColumn fx:id=\"colTanggal\" prefWidth=\"184.00006103515625\" text=\"Tanggal Hutang\" />\r\n                    </columns>\r\n                </TableView>\r\n            </AnchorPane>\r\n        </Tab>\r\n    </TabPane>\r\n    <Button layoutX=\"828.0\" mnemonicParsing=\"false\" onAction=\"#handleLogoutAction\" prefHeight=\"42.0\" prefWidth=\"120.0\" style=\"-fx-background-color: #FC4F4F;\" text=\"Keluar\" textFill=\"WHITE\">\r\n      <font>\r\n         <Font name=\"System Bold\" size=\"19.0\" />\r\n      </font>\r\n      <graphic>\r\n          <ImageView fitHeight=\"38.0\" fitWidth=\"30.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n              <Image url=\"@images/log-out.png\" />\r\n          </ImageView>\r\n      </graphic>\r\n   </Button>\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/classes/com/toko/toko/HomePage.fxml b/target/classes/com/toko/toko/HomePage.fxml
+--- a/target/classes/com/toko/toko/HomePage.fxml	
++++ b/target/classes/com/toko/toko/HomePage.fxml	
+@@ -1,37 +1,47 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.image.*?>
+-<?import javafx.scene.layout.*?>
+-<?import javafx.scene.text.*?>
++<?import javafx.scene.control.Button?>
++<?import javafx.scene.control.Label?>
++<?import javafx.scene.control.Spinner?>
++<?import javafx.scene.control.Tab?>
++<?import javafx.scene.control.TabPane?>
++<?import javafx.scene.control.TableColumn?>
++<?import javafx.scene.control.TableView?>
++<?import javafx.scene.control.TextField?>
++<?import javafx.scene.image.Image?>
++<?import javafx.scene.image.ImageView?>
++<?import javafx.scene.layout.AnchorPane?>
++<?import javafx.scene.text.Font?>
+ 
+-<AnchorPane prefHeight="612.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toko.toko.Controller.ControlHome">
++<AnchorPane prefHeight="612.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toko.toko.Controller.ControlHome">
+     <TabPane layoutY="43.0" prefHeight="574.0" prefWidth="947.0" tabClosingPolicy="UNAVAILABLE">
+         <Tab text="Kasir">
+-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #FFFDDE;">
+-                <TextField fx:id="tfIDbarang" layoutX="120.0" layoutY="106.0" />
+-            <Label layoutX="22.0" layoutY="110.0" text="ID Barang" />
+-            <Spinner fx:id="spJumlahBarang" layoutX="120.0" layoutY="175.0" />
+-            <Label layoutX="22.0" layoutY="179.0" text="Jumlah Barang" />
+-            <TableView fx:id="tbBelanja" layoutX="506.0" prefHeight="482.0" prefWidth="442.0" style="-fx-alignment: center;">
++            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #FF9F45;">
++                <TextField fx:id="tfIDbarangKasir" layoutX="150.0" layoutY="126.0" prefHeight="26.0" prefWidth="211.0" />
++            <Label layoutX="14.0" layoutY="130.0" text="ID Barang" textFill="WHITE">
++               <font>
++                  <Font name="Britannic Bold" size="17.0" />
++               </font></Label>
++            <Spinner fx:id="spJumlahBarang" layoutX="150.0" layoutY="184.0" prefHeight="26.0" prefWidth="113.0" />
++            <TableView fx:id="tbBelanja" layoutX="484.0" prefHeight="482.0" prefWidth="462.0" style="-fx-alignment: center;">
+               <columns>
+-                <TableColumn fx:id="colNamaarang" prefWidth="131.20001220703125" style="-fx-alignment: center;" text="Nama Barang" />
+-                <TableColumn fx:id="colHargaSatuan" prefWidth="110.39996337890625" style="-fx-alignment: center;" text="Harga Satuan" />
+-                  <TableColumn fx:id="colJumlaharang" prefWidth="90.39996337890625" style="-fx-alignment: center;" text="Jumlah Barang" />
+-                  <TableColumn fx:id="colTotalHarga" prefWidth="111.2000732421875" style="-fx-alignment: center;" text="Total Harga" />
++                <TableColumn fx:id="colNamaarang" prefWidth="156.00003051757812" style="-fx-alignment: center;" text="Nama Barang" />
++                <TableColumn fx:id="colHargaSatuan" prefWidth="127.99993896484375" style="-fx-alignment: center;" text="Harga Satuan" />
++                  <TableColumn fx:id="colJumlaharang" prefWidth="56.8001708984375" style="-fx-alignment: center;" text="Jumlah" />
++                  <TableColumn fx:id="colTotalHarga" prefWidth="121.599853515625" style="-fx-alignment: center;" text="Total Harga" />
+               </columns>
+             </TableView>
+-            <Label layoutX="506.0" layoutY="488.0" text="Total Belanja : ">
++            <Label layoutX="484.0" layoutY="488.0" text="Total Belanja : " textFill="WHITE">
+                <font>
+                   <Font name="System Bold" size="29.0" />
+                </font>
+             </Label>
+-            <Label fx:id="lbTotalBelanja" layoutX="708.0" layoutY="488.0" prefHeight="43.0" prefWidth="218.0" text="0.0">
++            <Label fx:id="lbTotalBelanja" layoutX="686.0" layoutY="488.0" prefHeight="43.0" prefWidth="218.0" text="0.0" textFill="WHITE">
+                <font>
+                   <Font name="System Bold" size="29.0" />
+                </font>
+             </Label>
+-            <Button fx:id="btnADD" layoutX="222.0" layoutY="395.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="89.0" style="-fx-background-color: #EF2F88;" textFill="WHITE">
++            <Button fx:id="btnADD" layoutX="221.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleAddBelanja" prefHeight="70.0" prefWidth="77.0" style="-fx-background-color: #EF2F88;" textFill="WHITE">
+                <font>
+                   <Font name="System Bold" size="28.0" />
+                </font>
+@@ -41,7 +51,7 @@
+                    </ImageView>
+                </graphic>
+             </Button>
+-            <Button fx:id="btnClearCount" layoutX="61.0" layoutY="397.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="89.0" style="-fx-background-color: #470D21;" textFill="WHITE">
++            <Button fx:id="btnClearCount" layoutX="60.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleClearKasirAction" prefHeight="58.0" prefWidth="89.0" style="-fx-background-color: #470D21;" textFill="WHITE">
+                <font>
+                   <Font name="System Bold" size="15.0" />
+                </font>
+@@ -50,6 +60,26 @@
+                        <Image url="@images/error.png" />
+                    </ImageView>
+                </graphic>
++            </Button>
++            <Label layoutX="14.0" layoutY="188.0" text="Jumlah Barang" textFill="WHITE">
++               <font>
++                  <Font name="Britannic Bold" size="17.0" />
++               </font>
++            </Label>
++            <Label layoutX="36.0" layoutY="14.0" text="Kasir Toko Rian" textFill="WHITE">
++               <font>
++                  <Font name="Century Schoolbook Bold" size="34.0" />
++               </font>
++            </Label>
++            <Button fx:id="btnNewTransaksi" layoutX="9.0" layoutY="447.0" mnemonicParsing="false" onAction="#handleMakeTs" style="-fx-background-color: #313552;" text="Transaksi Baru" textFill="WHITE">
++               <font>
++                  <Font name="System Bold" size="15.0" />
++               </font>
++            </Button>
++            <Button layoutX="361.0" layoutY="445.0" mnemonicParsing="false" onAction="#handleCetakStruk" style="-fx-background-color: #96CEB4;" text="Cetak Struk" textFill="#fffefe">
++               <font>
++                  <Font name="System Bold" size="16.0" />
++               </font>
+             </Button>
+             </AnchorPane>
+         </Tab>

@@ -3,7 +3,6 @@ package com.toko.toko.Model;
 import com.toko.toko.Model.KoneksiDatabase.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,11 +11,11 @@ import java.sql.Statement;
 
 public class DatabaseModel {
     private final Connection connection;
+    private ObservableList<BarangPenjualan> penjualans = FXCollections.observableArrayList();
 
     public DatabaseModel(){
         this.connection = DatabaseConnection.getKoneksi();
     }
-
     public boolean loginAkun(Akun akun){
         try {
             String sql = "SELECT akun.username, akun.password FROM akun WHERE username = ? AND password = ?";
@@ -103,6 +102,7 @@ public class DatabaseModel {
         }
         return barangs;
     }
+
     public int getIdBarang(){
         try{
             String sql = "SELECT MAX(id_barang) FROM barang";
@@ -116,5 +116,72 @@ public class DatabaseModel {
             System.out.println(e.getMessage());
         }
         return 0;
+    }
+    public int getIdTransaksi(){
+        int id = 0;
+        try {
+            String sql = "SELECT MAX(id_transaksi) FROM transaksi";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                return (resultSet.getInt(1)) != 0 ? resultSet.getInt(1)+1 : 12123;
+            }
+        }catch (Exception e){
+            System.out.println(e);
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
+    public void tambahTransaksi(Transaksi transaksi){
+        try{
+            String sql = "INSERT INTO transaksi(id_transaksi, tanggal_transaksi) VALUES(?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, transaksi.getId_transaksi());
+            preparedStatement.setString(2,transaksi.getTanggal_transaksi());
+            preparedStatement.execute();
+            preparedStatement.close();
+        }catch (Exception e){
+            System.out.println("EROR TRANSAKSI");
+            System.out.println(e);
+            System.out.println(e.getMessage());
+        }
+    }
+    public void kurangBarang(int id, int jumlah){
+        try {
+            String sql = "CALL kurangBarang(?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(2,jumlah);
+            preparedStatement.execute();
+            preparedStatement.close();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+    public void selectBelanja(int id, int jumlah){
+        try {
+            String sql = "CALL selectBarang(?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                penjualans.add(new BarangPenjualan(
+                        resultSet.getString(1),
+                        resultSet.getDouble(2),
+                        jumlah,
+                        jumlah*resultSet.getDouble(2)));
+            }
+            kurangBarang(id, jumlah);
+        }catch (Exception e){
+            System.out.println("EROR SELECT BARANG");
+            System.out.println(e);
+            System.out.println(e.getMessage());
+        }
+    }
+    public ObservableList<BarangPenjualan> getTransaksis() {
+        return penjualans;
+    }
+    public void resetPenjualan(){
+        penjualans.clear();
     }
 }

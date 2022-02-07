@@ -1,0 +1,67 @@
+Index: src/main/java/com/toko/toko/Model/transaksi.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/toko/toko/Model/transaksi.java b/src/main/java/com/toko/toko/Model/Transaksi.java
+rename from src/main/java/com/toko/toko/Model/transaksi.java
+rename to src/main/java/com/toko/toko/Model/Transaksi.java
+--- a/src/main/java/com/toko/toko/Model/transaksi.java	
++++ b/src/main/java/com/toko/toko/Model/Transaksi.java	
+@@ -1,24 +1,20 @@
+ package com.toko.toko.Model;
+ 
+ import javafx.beans.property.IntegerProperty;
++import javafx.beans.property.SimpleIntegerProperty;
++import javafx.beans.property.SimpleStringProperty;
+ import javafx.beans.property.StringProperty;
+ 
+-import java.util.ArrayList;
++public class Transaksi {
+ 
+-public class transaksi {
+-    private IntegerProperty id_transaksi;
+-    private StringProperty tanggal_transaksi;
+-    private ArrayList<BarangPenjualan> barang_penjualan;
++    private IntegerProperty id_transaksi = new SimpleIntegerProperty();
++    private StringProperty tanggal_transaksi = new SimpleStringProperty();
+ 
+-    public transaksi(String tanggal_transaksi, ArrayList<BarangPenjualan> barang_penjualan) {
++    public Transaksi(int id_transaksi, String tanggal_transaksi) {
++        setId_transaksi(id_transaksi);
+         setTanggal_transaksi(tanggal_transaksi);
+-        this.barang_penjualan = barang_penjualan;
+     }
+-    public transaksi(String tanggal_transaksi, BarangPenjualan barang_penjualan) {
+-        this.barang_penjualan = new ArrayList<>();
+-        setTanggal_transaksi(tanggal_transaksi);
+-        this.barang_penjualan.add(barang_penjualan);
+-    }
++
+     public int getId_transaksi() {
+         return id_transaksi.get();
+     }
+@@ -26,7 +22,6 @@
+     public IntegerProperty id_transaksiProperty() {
+         return id_transaksi;
+     }
+-
+     public void setId_transaksi(int id_transaksi) {
+         this.id_transaksi.set(id_transaksi);
+     }
+@@ -42,15 +37,4 @@
+     public void setTanggal_transaksi(String tanggal_transaksi) {
+         this.tanggal_transaksi.set(tanggal_transaksi);
+     }
+-
+-    public ArrayList<BarangPenjualan> getBarang_penjualan() {
+-        return barang_penjualan;
+-    }
+-
+-    public void setBarang_penjualan(ArrayList<BarangPenjualan> barang_penjualan) {
+-        this.barang_penjualan = barang_penjualan;
+-    }
+-    public void tambahBarang(BarangPenjualan barangPenjualan){
+-        this.barang_penjualan.add(barangPenjualan);
+-    }
+ }
