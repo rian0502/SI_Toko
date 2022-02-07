@@ -12,6 +12,9 @@
     <list default="true" id="da6edf39-f5c3-4420-8ef3-ae1d24640fc9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +52,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ToolWindowRun.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="C:/Program Files/Java/javafx-sdk-17.0.0.1/bin/vcruntime140_1.dll" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.17931035" />
@@ -105,7 +108,9 @@
       <workItem from="1644151571088" duration="40000" />
       <workItem from="1644187514452" duration="2276000" />
       <workItem from="1644197968230" duration="7600000" />
-      <workItem from="1644211131108" duration="1839000" />
+      <workItem from="1644211131108" duration="2006000" />
+      <workItem from="1644215774543" duration="1287000" />
+      <workItem from="1644218476889" duration="929000" />
     </task>
     <servers />
   </component>

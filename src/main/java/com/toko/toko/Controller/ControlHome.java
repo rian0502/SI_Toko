@@ -23,13 +23,29 @@ import java.util.ResourceBundle;
 
 public class ControlHome implements Initializable {
     @FXML
-    public Button btnCancel;
+    private Button btnCancel;
     @FXML
-    public Button btnADD;
+    private Button btnADD;
     @FXML
-    public Button btnClearCount;
+    private Button btnClearCount;
     @FXML
-    public TextField tfIDbarangKasir;
+    private TextField tfIDbarangKasir;
+    @FXML
+    private Button btnUbahHutang;
+    @FXML
+    private Button btnLunas;
+    @FXML
+    private Button btnSimpanHutang;
+    @FXML
+    private Button btnTambahHutang;
+    @FXML
+    private Button btnCloseHutang;
+    @FXML
+    private TextArea tfAlamatHutang;
+    @FXML
+    private TextField tfJumlahHutang;
+    @FXML
+    private TextField tfNamaHutang;
     @FXML
     private Label lbTotalBelanja;
     @FXML
@@ -85,7 +101,7 @@ public class ControlHome implements Initializable {
     @FXML
     private Button btnNewTransaksi;
     DatabaseModel dbm ;
-
+    private double totalharga = 0;
     public void refreshTableBarang(){
         ObservableList<Barang> barangs = dbm.getBarang();
         rowID.setCellValueFactory(id->id.getValue().IDbarangProperty().asObject());
@@ -212,7 +228,6 @@ public class ControlHome implements Initializable {
         btnAddBarang.setDisable(true);
     }
     public void refreshTableKasir(){
-        double totalharga = 0;
         ObservableList<BarangPenjualan> belanjas = dbm.getTransaksis();
         colNamaarang.setCellValueFactory(nama->nama.getValue().nama_barangProperty());
         colHargaSatuan.setCellValueFactory(harga->harga.getValue().harga_barangProperty().asObject());
@@ -255,6 +270,7 @@ public class ControlHome implements Initializable {
         spJumlahBarang.setEditable(false);
         btnNewTransaksi.setDisable(false);
         btnADD.setDisable(true);
+        totalharga = 0.0;
         dbm.resetPenjualan();
     }
     @FXML
@@ -270,5 +286,17 @@ public class ControlHome implements Initializable {
         }catch (Exception e){
 
         }
+    }
+    @FXML
+    public void handleTambahButton(ActionEvent event) {
+    }
+    @FXML
+    public void handleUbahButton(ActionEvent event) {
+    }
+    @FXML
+    public void handleLunasButton(ActionEvent event) {
+    }
+    @FXML
+    public void handleCloseAction(ActionEvent event) {
     }
 }
