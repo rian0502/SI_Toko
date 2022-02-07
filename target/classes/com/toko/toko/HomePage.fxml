@@ -33,7 +33,7 @@
                   <Font name="System Bold" size="29.0" />
                </font>
             </Label>
-            <Button fx:id="btnADD" layoutX="221.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleAddBelanja" prefHeight="70.0" prefWidth="77.0" style="-fx-background-color: #EF2F88;" textFill="WHITE">
+            <Button fx:id="btnADD" layoutX="256.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleAddBelanja" prefHeight="70.0" prefWidth="77.0" style="-fx-background-color: #EF2F88;" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>
@@ -43,7 +43,7 @@
                    </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="btnClearCount" layoutX="60.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleClearKasirAction" prefHeight="58.0" prefWidth="89.0" style="-fx-background-color: #470D21;" textFill="WHITE">
+            <Button fx:id="btnClearCount" layoutX="117.0" layoutY="328.0" mnemonicParsing="false" onAction="#handleClearKasirAction" prefHeight="58.0" prefWidth="89.0" style="-fx-background-color: #470D21;" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -73,6 +73,12 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
+            <TextField fx:id="tfUangBelanja" layoutX="150.0" layoutY="241.0" prefHeight="26.0" prefWidth="211.0" />
+            <Label layoutX="28.0" layoutY="245.0" text="Uang Belanja" textFill="WHITE">
+               <font>
+                  <Font name="Britannic Bold" size="17.0" />
+               </font>
+            </Label>
             </AnchorPane>
         </Tab>
         <Tab text="Daftar Barang">
@@ -138,9 +144,9 @@
                         <TableColumn fx:id="colTanggal" prefWidth="184.00006103515625" text="Tanggal Hutang" />
                     </columns>
                 </TableView>
-            <TextField layoutX="89.0" layoutY="386.0" prefHeight="26.0" prefWidth="194.0" />
-            <TextField layoutX="89.0" layoutY="458.0" prefHeight="26.0" prefWidth="194.0" />
-            <TextArea layoutX="397.0" layoutY="386.0" prefHeight="105.0" prefWidth="205.0" />
+            <TextField fx:id="tfNamaHutang" layoutX="89.0" layoutY="386.0" prefHeight="26.0" prefWidth="194.0" />
+            <TextField fx:id="tfJumlahHutang" layoutX="89.0" layoutY="458.0" prefHeight="26.0" prefWidth="194.0" />
+            <TextArea fx:id="tfAlamatHutang" layoutX="397.0" layoutY="386.0" prefHeight="105.0" prefWidth="205.0" />
             <Label layoutX="23.0" layoutY="386.0" text="Nama" textFill="#ffffff">
                <font>
                   <Font name="System Bold" size="16.0" />
@@ -155,6 +161,11 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
+            <Button fx:id="btnSimpanHutang" layoutX="397.0" layoutY="503.0" mnemonicParsing="false" onAction="#handleSHutangAction" text="Simpan" />
+            <Button fx:id="btnCloseHutang" layoutX="547.0" layoutY="503.0" mnemonicParsing="false" onAction="#handleCloseAction" prefHeight="26.0" prefWidth="56.0" text="Close" />
+            <Button fx:id="btnLunas" layoutX="710.0" layoutY="371.0" mnemonicParsing="false" onAction="#handleLunasButton" prefHeight="30.0" prefWidth="70.0" text="Lunas" />
+            <Button fx:id="btnUbahHutang" layoutX="710.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleUbahButton" prefHeight="30.0" prefWidth="70.0" text="Ubah" />
+            <Button fx:id="btnTambahHutang" layoutX="710.0" layoutY="479.0" mnemonicParsing="false" onAction="#handleTambahButton" prefHeight="30.0" prefWidth="70.0" text="Tambah" />
             </AnchorPane>
         </Tab>
     </TabPane>

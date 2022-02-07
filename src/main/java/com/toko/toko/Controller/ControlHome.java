@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
 
 public class ControlHome implements Initializable {
     @FXML
+    private TextField tfUangBelanja;
+    @FXML
     private Button btnCancel;
     @FXML
     private Button btnADD;
@@ -289,14 +291,30 @@ public class ControlHome implements Initializable {
     }
     @FXML
     public void handleTambahButton(ActionEvent event) {
+        btnUbahHutang.setDisable(true);
+        btnLunas.setDisable(true);
     }
     @FXML
     public void handleUbahButton(ActionEvent event) {
+        btnLunas.setDisable(true);
+        btnTambahHutang.setDisable(true);
     }
     @FXML
     public void handleLunasButton(ActionEvent event) {
+        btnUbahHutang.setDisable(true);
+        btnTambahHutang.setDisable(true);
     }
     @FXML
     public void handleCloseAction(ActionEvent event) {
+        btnUbahHutang.setDisable(false);
+        btnLunas.setDisable(false);
+        btnTambahHutang.setDisable(false);
+        tfNamaHutang.clear();
+        tfJumlahHutang.clear();
+        tfAlamatHutang.clear();
+    }
+    @FXML
+    public void handleSHutangAction(ActionEvent event) {
+
     }
 }

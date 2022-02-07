@@ -1,13 +1,15 @@
 package com.toko.toko.Model;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Hutang {
-    private StringProperty nama;
-    private StringProperty alamat;
-    private StringProperty tanggal_hutang;
-    private DoubleProperty jumlah_hutang;
+    private StringProperty nama = new SimpleStringProperty();
+    private StringProperty alamat = new SimpleStringProperty();
+    private StringProperty tanggal_hutang = new SimpleStringProperty();
+    private DoubleProperty jumlah_hutang = new SimpleDoubleProperty();
 
     public Hutang(String nama, String alamat, String tanggal_hutang, double jumlah_hutang) {
         setNama(nama);

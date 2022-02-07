@@ -12,6 +12,7 @@
     <list default="true" id="da6edf39-f5c3-4420-8ef3-ae1d24640fc9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Controller/ControlHome.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/Hutang.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toko/toko/Model/Hutang.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toko/toko/HomePage.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/Controller/ControlHome.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/toko/toko/HomePage.fxml" afterDir="false" />
@@ -110,7 +111,8 @@
       <workItem from="1644197968230" duration="7600000" />
       <workItem from="1644211131108" duration="2006000" />
       <workItem from="1644215774543" duration="1287000" />
-      <workItem from="1644218476889" duration="929000" />
+      <workItem from="1644218476889" duration="1232000" />
+      <workItem from="1644243582113" duration="2209000" />
     </task>
     <servers />
   </component>
