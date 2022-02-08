@@ -102,8 +102,10 @@ public class ControlHome implements Initializable {
     private Button btnHapusBarang;
     @FXML
     private Button btnNewTransaksi;
-    DatabaseModel dbm ;
+    private DatabaseModel dbm ;
+    private int idTrx = 0;
     private double totalharga = 0;
+
     public void refreshTableBarang(){
         ObservableList<Barang> barangs = dbm.getBarang();
         rowID.setCellValueFactory(id->id.getValue().IDbarangProperty().asObject());
@@ -243,24 +245,18 @@ public class ControlHome implements Initializable {
     }
     @FXML
     public void handleAddBelanja() {
-        try {
-           if (dbm.searchBarang(tfIDbarangKasir.getText().trim()) == 0){
-               JOptionPane.showMessageDialog(null,"Barang tidak Ada","Pembelian",JOptionPane.WARNING_MESSAGE);
-           }else {
-              if(dbm.isEmptyBarang(tfIDbarangKasir.getText().trim(),spJumlahBarang.getValue())){
-                  dbm.selectBelanja(Integer.parseInt(tfIDbarangKasir.getText().trim()), spJumlahBarang.getValue(), idTrx);
-                  refreshTableKasir();
-                  refreshTableBarang();
-              }else {
-                  JOptionPane.showMessageDialog(null,"Barang tidak Cukup","Pembelian",JOptionPane.WARNING_MESSAGE);
-              }
-           }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            System.out.println(e);
+        if (dbm.searchBarang(tfIDbarangKasir.getText().trim()) == 0){
+            JOptionPane.showMessageDialog(null,"Barang tidak Ada","Pembelian",JOptionPane.WARNING_MESSAGE);
+        }else {
+            if(dbm.isEmptyBarang(tfIDbarangKasir.getText().trim(),spJumlahBarang.getValue())){
+                dbm.selectBelanja(Integer.parseInt(tfIDbarangKasir.getText().trim()), spJumlahBarang.getValue(), idTrx);
+                refreshTableKasir();
+                refreshTableBarang();
+            }else {
+                JOptionPane.showMessageDialog(null,"Barang tidak Cukup","Pembelian",JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
-    private int idTrx = 0;
     @FXML
     public void handleClearKasirAction() {
         tfIDbarangKasir.clear();
@@ -282,30 +278,27 @@ public class ControlHome implements Initializable {
         spJumlahBarang.setEditable(true);
         LocalDate date = LocalDate.now();
         btnADD.setDisable(false);
-        try {
-            idTrx = dbm.getIdTransaksi();
-            dbm.tambahTransaksi(new Transaksi(idTrx,date.toString()));
-        }catch (Exception e){
+        idTrx = dbm.getIdTransaksi();
+        dbm.tambahTransaksi(new Transaksi(idTrx,date.toString()));
 
-        }
     }
     @FXML
-    public void handleTambahButton(ActionEvent event) {
+    public void handleTambahButton() {
         btnUbahHutang.setDisable(true);
         btnLunas.setDisable(true);
     }
     @FXML
-    public void handleUbahButton(ActionEvent event) {
+    public void handleUbahButton() {
         btnLunas.setDisable(true);
         btnTambahHutang.setDisable(true);
     }
     @FXML
-    public void handleLunasButton(ActionEvent event) {
+    public void handleLunasButton() {
         btnUbahHutang.setDisable(true);
         btnTambahHutang.setDisable(true);
     }
     @FXML
-    public void handleCloseAction(ActionEvent event) {
+    public void handleCloseAction() {
         btnUbahHutang.setDisable(false);
         btnLunas.setDisable(false);
         btnTambahHutang.setDisable(false);
@@ -314,7 +307,13 @@ public class ControlHome implements Initializable {
         tfAlamatHutang.clear();
     }
     @FXML
-    public void handleSHutangAction(ActionEvent event) {
+    public void handleSHutangAction() {
+        if(!btnTambahHutang.isDisable()){
 
+        }else if(!btnUbahHutang.isDisable()){
+
+        }else{
+
+        }
     }
 }

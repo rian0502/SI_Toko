@@ -234,4 +234,23 @@ public class DatabaseModel {
     public void resetPenjualan(){
         penjualans.clear();
     }
+
+    public void tambahHutang(Hutang hutang){
+        try{
+            String sql = "INSERT INTO hutang (nama, alamat, jumlah_hutang, tanggal_hutang) VALUES (?,?,?,?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, hutang.getNama());
+            statement.setString(2, hutang.getAlamat());
+            statement.setDouble(3, hutang.getJumlah_hutang());
+            statement.setString(4, hutang.getTanggal_hutang());
+            statement.execute();
+            statement.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(e);
+        }
+    }
+    public void ubahHutang(Hutang hutang){
+
+    }
 }
